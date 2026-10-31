@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happybirthday Ngọc Duyên</title>
+    <title>happybirthday</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
         }
 
         /* ================================================= */
-        /* HỆ THỐNG TRANG & CHUYỂN CẢNH MUỢT MÀ */
+        /* HỆ THỐNG TRANG & CHUYỂN CẢNH MƯỢT MÀ */
         /* ================================================= */
         .page {
             display: none;
@@ -460,6 +460,133 @@
         }
 
         /* ================================================= */
+        /* MÀN HÌNH CHIBI 3D HÁT (XUẤT HIỆN SAU NHẤP CONTINUE) */
+        /* ================================================= */
+        #singingScene {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+            opacity: 0;
+            visibility: hidden;
+            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.55) 0%, rgba(255, 130, 169, 0.75) 50%, rgba(230, 90, 140, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow: hidden;
+        }
+
+        #singingScene.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Canvas Pháo hoa */
+        #fireworksCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Chữ lời bài hát rực rỡ ở giữa màn hình */
+        .singing-lyrics {
+            position: absolute;
+            top: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            width: 92%;
+            max-width: 650px;
+            text-align: center;
+            font-family: 'Fredoka', 'Montserrat', sans-serif;
+            font-size: clamp(34px, 7vw, 58px);
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 4px 18px rgba(255, 20, 100, 0.85), 0 0 35px rgba(255, 255, 255, 0.95);
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .singing-lyrics.active {
+            opacity: 1;
+            transform: translateX(-50%) scale(1.08);
+        }
+
+        /* Container Nhân vật Chibi 3D */
+        .chibi-container {
+            position: absolute;
+            bottom: 14%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            width: 240px;
+            height: 260px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.08s linear;
+            filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.32));
+        }
+
+        /* SVG CHIBI 3D CHIM VÀNG ĐÁNG YÊU SẮC NÉT */
+        .chibi-character {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Chuyển động há mỏ hát theo điệu nhạc */
+        .chibi-beak-lower {
+            transform-origin: 100px 116px;
+            transition: transform 0.08s ease;
+        }
+
+        .chibi-singing .chibi-beak-lower {
+            animation: mouthSing 0.16s infinite alternate ease-in-out;
+        }
+
+        @keyframes mouthSing {
+            0% { transform: scaleY(0.25) scaleX(0.85); }
+            100% { transform: scaleY(1.35) scaleX(1.15); }
+        }
+
+        /* Cánh vẫy nhẹ khi hát */
+        .chibi-wing-left {
+            transform-origin: 45px 125px;
+            animation: wingFlapL 0.25s infinite alternate ease-in-out;
+        }
+        .chibi-wing-right {
+            transform-origin: 155px 125px;
+            animation: wingFlapR 0.25s infinite alternate ease-in-out;
+        }
+
+        @keyframes wingFlapL {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-15deg) translateY(-4px); }
+        }
+        @keyframes wingFlapR {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(15deg) translateY(-4px); }
+        }
+
+        /* Nhún nhảy vui nhộn khi hát */
+        .chibi-singing {
+            animation: chibiBounce 0.3s infinite alternate ease-in-out;
+        }
+
+        @keyframes chibiBounce {
+            0% { transform: translateY(0) rotate(-3deg); }
+            100% { transform: translateY(-16px) rotate(3deg); }
+        }
+
+        /* ================================================= */
         /* TRANG 3 - BIRTHDAY WISH & CAKE */
         /* ================================================= */
         #page3 {
@@ -764,116 +891,39 @@
             100% { opacity: 0; transform: translate(calc(-50% + 25px), -100px) scale(2.2); }
         }
 
-        /* ================================================= */
-        /* MÀN HÌNH CHIBI 3D HÁT (TÍNH NĂNG MỚI ĐƯỢC THÊM VÀO) */
-        /* ================================================= */
-        #singingScene {
+        .wish-made {
             position: absolute;
             inset: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 60;
+            text-align: center;
             opacity: 0;
             visibility: hidden;
-            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.4) 0%, rgba(255, 130, 169, 0.6) 50%, rgba(230, 90, 140, 0.8) 100%);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: opacity 1s ease, visibility 1s ease;
-            overflow: hidden;
+            background: #000;
+            z-index: 50;
+            transition: opacity 1.5s ease;
         }
 
-        #singingScene.show {
+        .wish-made.show {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Canvas Pháo hoa */
-        #fireworksCanvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Chữ lời bài hát ở giữa màn hình */
-        .singing-lyrics {
-            position: absolute;
-            top: 22%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-            font-family: 'Fredoka', 'Montserrat', sans-serif;
-            font-size: clamp(32px, 6vw, 54px);
-            font-weight: 700;
+        .wish-made-title {
             color: #ffffff;
-            text-shadow: 0 4px 15px rgba(255, 40, 100, 0.8), 0 0 30px rgba(255, 255, 255, 0.9);
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(38px, 8vw, 70px);
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .wish-made-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: clamp(15px, 2.5vw, 22px);
             letter-spacing: 2px;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .singing-lyrics.active {
-            opacity: 1;
-            transform: translateX(-50%) scale(1.05);
-        }
-
-        /* Container Nhân vật Chibi 3D */
-        .chibi-container {
-            position: absolute;
-            bottom: 12%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
-            width: 220px;
-            height: 240px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.1s linear;
-            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.3));
-        }
-
-        /* SVG CHIBI 3D CHIM VÀNG ĐÁNG YÊU NHƯ VIDEO */
-        .chibi-character {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
-
-        .chibi-body-grad {
-            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* Chuyển động miệng hát */
-        .chibi-beak-open {
-            transform-origin: 100px 115px;
-            transition: transform 0.08s ease;
-        }
-
-        .chibi-singing .chibi-beak-open {
-            animation: mouthSing 0.18s infinite alternate ease-in-out;
-        }
-
-        @keyframes mouthSing {
-            0% { transform: scaleY(0.3) scaleX(0.9); }
-            100% { transform: scaleY(1.3) scaleX(1.1); }
-        }
-
-        /* Nhún nhảy khi hát */
-        .chibi-singing {
-            animation: chibiBounce 0.35s infinite alternate ease-in-out;
-        }
-
-        @keyframes chibiBounce {
-            0% { transform: translateY(0) rotate(-2deg); }
-            100% { transform: translateY(-12px) rotate(2deg); }
         }
 
         /* ================================================= */
@@ -1154,16 +1204,22 @@
             .letter { padding: 35px 22px; }
             .letter h1 { font-size: 34px; }
             .singing-lyrics { font-size: clamp(26px, 8vw, 38px); }
-            .chibi-container { width: 170px; height: 190px; }
+            .chibi-container { width: 180px; height: 200px; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Nhạc nền sinh nhật -->
+    <!-- Nhạc nền sinh nhật chính -->
     <audio id="backgroundMusic" loop preload="none">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- File nhạc Happy Birthday giọng hát Chibi (hapy.mp3 cùng thư mục) -->
+    <audio id="hapyAudio" preload="auto">
+        <source src="hapy.mp3" type="audio/mpeg">
+    </audio>
+
     <button id="musicToggle" class="music-toggle" type="button"
             aria-label="Bật nhạc nền" aria-pressed="false">
         ♫ Bật nhạc
@@ -1266,12 +1322,96 @@
                 <img src="image2.bmp" alt="Birthday photo 2" class="birthday-photo" onerror="this.onerror=null; this.src='https://cdn.phototourl.com/member/2026-10-31-7f21227f-8a78-416c-8ae6-d70baffe6a93.jpg';">
             </div>
 
-            <button onclick="goToPage(3)">CONTINUE</button>
+            <!-- Nút CONTINUE kích hoạt màn hình Chibi hát với file hapy.mp3 -->
+            <button onclick="handleContinueFromNews()">CONTINUE</button>
         </div>
     </section>
 
     <!-- ================================================= -->
-    <!-- TRANG 3 - BIRTHDAY WISH & CAKE & CHIBI SINGING -->
+    <!-- MÀN HÌNH CHIBI 3D HÁT VÀ PHÁO HOA (VỚI HAPY.MP3) -->
+    <!-- ================================================= -->
+    <div id="singingScene">
+        <canvas id="fireworksCanvas"></canvas>
+        <div id="singingLyrics" class="singing-lyrics">Happy birthday</div>
+
+        <div id="chibiContainer" class="chibi-container">
+            <svg class="chibi-character" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Gradient 3D cho thân Chibi -->
+                    <radialGradient id="bodyGrad3D" cx="35%" cy="30%" r="65%">
+                        <stop offset="0%" stop-color="#ffff80" />
+                        <stop offset="45%" stop-color="#ffcc00" />
+                        <stop offset="85%" stop-color="#e69500" />
+                        <stop offset="100%" stop-color="#b36b00" />
+                    </radialGradient>
+                    <linearGradient id="beakGrad3D" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#ff9500" />
+                        <stop offset="100%" stop-color="#d93b00" />
+                    </linearGradient>
+                    <linearGradient id="crestGrad3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff3b30" />
+                        <stop offset="100%" stop-color="#990000" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Đuôi xòe xanh ngọc xinh xắn -->
+                <path d="M165 110 C 195 95, 200 125, 178 135 C 198 142, 188 162, 160 145 Z" fill="#30d158" stroke="#1c1c1e" stroke-width="4.5" stroke-linejoin="round"/>
+
+                <!-- Cánh Trái vẫy nhún nhảy -->
+                <g class="chibi-wing-left">
+                    <path d="M44 112 C 15 115, 12 142, 38 140 C 48 135, 48 120, 44 112 Z" fill="#ffcc00" stroke="#1c1c1e" stroke-width="4.5"/>
+                </g>
+
+                <!-- Cánh Phải vẫy nhún nhảy -->
+                <g class="chibi-wing-right">
+                    <path d="M156 112 C 185 115, 188 142, 162 140 C 152 135, 152 120, 156 112 Z" fill="#ffcc00" stroke="#1c1c1e" stroke-width="4.5"/>
+                </g>
+
+                <!-- Thân Chibi tròn trĩnh 3D -->
+                <circle cx="100" cy="115" r="64" fill="url(#bodyGrad3D)" stroke="#1c1c1e" stroke-width="5"/>
+                <!-- Bụng mềm mại màu sáng -->
+                <ellipse cx="100" cy="136" rx="42" ry="30" fill="#fffdf0" />
+
+                <!-- Mào tóc lửa đỏ quyến rũ -->
+                <path d="M85 54 C 72 24, 95 8, 100 28 C 108 8, 128 18, 115 54 Z" fill="url(#crestGrad3D)" stroke="#1c1c1e" stroke-width="4.5"/>
+
+                <!-- Đôi mắt Chibi to tròn long lanh dễ thương -->
+                <g class="chibi-eyes">
+                    <!-- Mắt trái -->
+                    <circle cx="70" cy="98" r="15" fill="#ffffff" stroke="#1c1c1e" stroke-width="3.5"/>
+                    <circle cx="72" cy="98" r="8.5" fill="#1c1c1e"/>
+                    <circle cx="75" cy="95" r="3.5" fill="#ffffff"/>
+                    <circle cx="69" cy="101" r="1.5" fill="#ffffff"/>
+                    
+                    <!-- Mắt phải -->
+                    <circle cx="130" cy="98" r="15" fill="#ffffff" stroke="#1c1c1e" stroke-width="3.5"/>
+                    <circle cx="128" cy="98" r="8.5" fill="#1c1c1e"/>
+                    <circle cx="125" cy="95" r="3.5" fill="#ffffff"/>
+                    <circle cx="131" cy="101" r="1.5" fill="#ffffff"/>
+                </g>
+
+                <!-- Má hồng ứng đỏ Chibi -->
+                <ellipse cx="55" cy="116" rx="9" ry="6" fill="#ff2d55" opacity="0.65" />
+                <ellipse cx="145" cy="116" rx="9" ry="6" fill="#ff2d55" opacity="0.65" />
+
+                <!-- Mỏ Chibi (Mỏ trên cố định, mỏ dưới há to nhún nhảy hát) -->
+                <g class="chibi-beak-group">
+                    <!-- Vòm họng đỏ đậm -->
+                    <ellipse cx="100" cy="120" rx="19" ry="17" fill="#800a0a" stroke="#1c1c1e" stroke-width="3"/>
+                    <path d="M88 126 C 94 118, 106 118, 112 126 C 106 134, 94 134, 88 126 Z" fill="#ff3b30"/> <!-- Lưỡi -->
+
+                    <!-- Mỏ trên -->
+                    <path d="M76 112 C 76 92, 124 92, 124 112 C 108 107, 92 107, 76 112 Z" fill="url(#beakGrad3D)" stroke="#1c1c1e" stroke-width="4.5"/>
+                    
+                    <!-- Mỏ dưới hát -->
+                    <path class="chibi-beak-lower" d="M80 115 C 80 142, 120 142, 120 115 C 108 120, 92 120, 80 115 Z" fill="url(#beakGrad3D)" stroke="#1c1c1e" stroke-width="4.5"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- TRANG 3 - BIRTHDAY WISH & CAKE -->
     <!-- ================================================= -->
     <section id="page3" class="page">
         <div class="birthday-wish-scene" id="birthdayWishScene">
@@ -1383,76 +1523,11 @@
                     </div>
                     <span class="blow-hint">Giữ liên tục 2 giây</span>
                 </div>
-            </div>
 
-            <!-- TÍNH NĂNG MỚI: MÀN HÌNH CHIBI HÁT HAPPY BIRTHDAY -->
-            <div id="singingScene">
-                <canvas id="fireworksCanvas"></canvas>
-                <div id="singingLyrics" class="singing-lyrics">Happy birthday</div>
-
-                <div id="chibiContainer" class="chibi-container">
-                    <svg class="chibi-character" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <radialGradient id="bodyGrad" cx="50%" cy="40%" r="50%">
-                                <stop offset="0%" stop-color="#fff369" />
-                                <stop offset="70%" stop-color="#ffd000" />
-                                <stop offset="100%" stop-color="#e6b000" />
-                            </radialGradient>
-                            <linearGradient id="beakGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ff7b00" />
-                                <stop offset="100%" stop-color="#cc3b00" />
-                            </linearGradient>
-                            <linearGradient id="crestGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#ff3b30" />
-                                <stop offset="100%" stop-color="#d70015" />
-                            </linearGradient>
-                        </defs>
-
-                        <!-- Đuôi xòe -->
-                        <path d="M165 110 C 190 100, 195 120, 175 130 C 195 135, 185 155, 160 140 Z" fill="#34c759" stroke="#1b1b1b" stroke-width="4" stroke-linejoin="round"/>
-
-                        <!-- Thân Chibi tròn 3D -->
-                        <circle cx="100" cy="115" r="65" fill="url(#bodyGrad)" stroke="#1b1b1b" stroke-width="5"/>
-                        <!-- Bụng màu sáng -->
-                        <ellipse cx="100" cy="135" rx="42" ry="32" fill="#fffdf0" />
-
-                        <!-- Mào lửa đỏ trên đầu -->
-                        <path d="M85 52 C 75 25, 95 10, 100 30 C 108 12, 125 20, 115 52 Z" fill="url(#crestGrad)" stroke="#1b1b1b" stroke-width="4"/>
-
-                        <!-- Đôi mắt to tròn Chibi dễ thương -->
-                        <g class="chibi-eyes">
-                            <!-- Mắt trái -->
-                            <circle cx="72" cy="100" r="14" fill="#ffffff" stroke="#1b1b1b" stroke-width="3"/>
-                            <circle cx="74" cy="100" r="8" fill="#1b1b1b"/>
-                            <circle cx="77" cy="97" r="3" fill="#ffffff"/>
-                            
-                            <!-- Mắt phải -->
-                            <circle cx="128" cy="100" r="14" fill="#ffffff" stroke="#1b1b1b" stroke-width="3"/>
-                            <circle cx="126" cy="100" r="8" fill="#1b1b1b"/>
-                            <circle cx="123" cy="97" r="3" fill="#ffffff"/>
-                        </g>
-
-                        <!-- Má hồng dễ thương -->
-                        <ellipse cx="58" cy="118" rx="8" ry="5" fill="#ff6b81" opacity="0.6" />
-                        <ellipse cx="142" cy="118" rx="8" ry="5" fill="#ff6b81" opacity="0.6" />
-
-                        <!-- Mỏ há to chuyển động hát (Upper Beak & Lower Beak) -->
-                        <g class="chibi-beak-group">
-                            <!-- Nền trong vòm họng -->
-                            <ellipse cx="100" cy="120" rx="18" ry="16" fill="#800a0a" stroke="#1b1b1b" stroke-width="3"/>
-                            <path d="M90 126 C 95 120, 105 120, 110 126 C 105 132, 95 132, 90 126 Z" fill="#ff4d4d"/> <!-- Lưỡi -->
-
-                            <!-- Mỏ trên -->
-                            <path d="M78 112 C 78 95, 122 95, 122 112 C 108 108, 92 108, 78 112 Z" fill="url(#beakGrad)" stroke="#1b1b1b" stroke-width="4"/>
-                            
-                            <!-- Mỏ dưới nhún nhảy hát -->
-                            <path class="chibi-beak-open" d="M82 115 C 82 138, 118 138, 118 115 C 108 120, 92 120, 82 115 Z" fill="url(#beakGrad)" stroke="#1b1b1b" stroke-width="4"/>
-                        </g>
-
-                        <!-- Cánh vẫy nhẹ -->
-                        <path d="M38 115 C 25 120, 25 135, 42 135 C 45 125, 42 120, 38 115 Z" fill="#ffd000" stroke="#1b1b1b" stroke-width="4"/>
-                        <path d="M162 115 C 175 120, 175 135, 158 135 C 155 125, 158 120, 162 115 Z" fill="#ffd000" stroke="#1b1b1b" stroke-width="4"/>
-                    </svg>
+                <!-- THÔNG BÁO WISH MADE -->
+                <div class="wish-made" id="wishMade">
+                    <div class="wish-made-title">Wish made</div>
+                    <div class="wish-made-subtitle">May your wish come true.</div>
                 </div>
             </div>
         </div>
@@ -1499,9 +1574,10 @@
     <!-- ================================================= -->
     <script>
         /* ================================================= */
-        /* 1. NHẠC NỀN */
+        /* 1. NHẠC NỀN & AUDIO HAPY.MP3 */
         /* ================================================= */
         const backgroundMusic = document.getElementById("backgroundMusic");
+        const hapyAudio = document.getElementById("hapyAudio");
         const musicToggle = document.getElementById("musicToggle");
 
         function updateMusicButton(isPlaying) {
@@ -1545,7 +1621,7 @@
         backgroundMusic?.addEventListener("pause", function () { updateMusicButton(false); });
 
         /* ================================================= */
-        /* 2. MẬT MÃ CỦA 4 CÂU HỎI */
+        /* 2. MẬT MÃ CỦA 4 CÂU HỎI (3110) */
         /* ================================================= */
         const correctAnswers = {
             1: "3",
@@ -1580,6 +1656,11 @@
             if (pageNumber === 4) {
                 resetEnvelope();
             }
+        }
+
+        /* Khi bấm CONTINUE ở Trang 2 -> Bật tính năng Chibi 3D Hát & Pháo hoa */
+        function handleContinueFromNews() {
+            startChibiSingingFeature();
         }
 
         /* ================================================= */
@@ -1678,7 +1759,181 @@
         }
 
         /* ================================================= */
-        /* 5. TRANG 3: THỔI NẾN & CHIBI HÁT 3D */
+        /* 5. TÍNH NĂNG CHIBI 3D HÁT & PHÁO HOA (VỚI HAPY.MP3) */
+        /* ================================================= */
+        let fireworksInterval = null;
+        let animationFrameId = null;
+
+        function startChibiSingingFeature() {
+            // Tạm dừng nhạc nền nếu đang phát
+            if (backgroundMusic && !backgroundMusic.paused) {
+                backgroundMusic.pause();
+            }
+
+            const singingScene = document.getElementById("singingScene");
+            const chibiContainer = document.getElementById("chibiContainer");
+            const lyricsElem = document.getElementById("singingLyrics");
+            if (!singingScene) return;
+
+            singingScene.classList.add("show");
+            chibiContainer.classList.add("chibi-singing");
+
+            // Phát nhạc Happy Birthday từ tệp hapy.mp3
+            if (hapyAudio) {
+                hapyAudio.currentTime = 0;
+                hapyAudio.volume = 1.0;
+                hapyAudio.play().catch(err => {
+                    console.warn("Không thể tự động phát hapy.mp3:", err);
+                });
+            }
+
+            // Khởi tạo Canvas Pháo hoa
+            startFireworks();
+
+            // Hiển thị lời bài hát đồng bộ mượt mà đúng video (~12s)
+            const lyricsTimeline = [
+                { time: 200, text: "Happy birthday" },
+                { time: 1800, text: "to youuuuu" },
+                { time: 4800, text: "Happy birthday" },
+                { time: 6400, text: "to youuuuu" },
+                { time: 9400, text: "Happy birthdayyyyyy" }
+            ];
+
+            lyricsTimeline.forEach(item => {
+                setTimeout(() => {
+                    if (singingScene.classList.contains("show")) {
+                        lyricsElem.classList.remove("active");
+                        void lyricsElem.offsetWidth;
+                        lyricsElem.textContent = item.text;
+                        lyricsElem.classList.add("active");
+                    }
+                }, item.time);
+            });
+
+            // Chuyển động nhảy qua lại giữa màn hình trong 12 giây (Giữa -> Phải -> Trái -> Giữa)
+            const startTime = performance.now();
+            const totalDuration = 12000; // 12 giây
+
+            function animateChibiMove(now) {
+                const elapsed = now - startTime;
+                let progress = elapsed / totalDuration;
+                if (progress > 1) progress = 1;
+
+                let translateX = 0;
+                if (progress < 0.33) {
+                    // Giữa -> Phải (+130px)
+                    const p = progress / 0.33;
+                    translateX = Math.sin(p * Math.PI / 2) * 130;
+                } else if (progress < 0.66) {
+                    // Phải (+130px) -> Trái (-130px)
+                    const p = (progress - 0.33) / 0.33;
+                    translateX = 130 - Math.sin(p * Math.PI / 2) * 260;
+                } else {
+                    // Trái (-130px) -> Giữa (0px)
+                    const p = (progress - 0.66) / 0.34;
+                    translateX = -130 + Math.sin(p * Math.PI / 2) * 130;
+                }
+
+                chibiContainer.style.transform = `translateX(calc(-50% + ${translateX}px))`;
+
+                if (progress < 1 && singingScene.classList.contains("show")) {
+                    animationFrameId = requestAnimationFrame(animateChibiMove);
+                } else {
+                    stopChibiSingingFeature();
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(animateChibiMove);
+        }
+
+        function stopChibiSingingFeature() {
+            if (fireworksInterval) clearInterval(fireworksInterval);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+            if (hapyAudio) {
+                hapyAudio.pause();
+                hapyAudio.currentTime = 0;
+            }
+
+            const singingScene = document.getElementById("singingScene");
+            if (singingScene) singingScene.classList.remove("show");
+
+            // Sau khi hát xong 12 giây -> Chuyển tiếp sang Trang 3 (Bánh sinh nhật)
+            goToPage(3);
+        }
+
+        /* Pháo hoa rơi lung linh */
+        function startFireworks() {
+            const canvas = document.getElementById("fireworksCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+            const colors = ['#ff4d4d', '#ffaf40', '#fffa65', '#32ff7e', '#18dcff', '#7d5fff', '#ffb8b8'];
+
+            function createFirework() {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * (canvas.height * 0.55);
+                const count = 38;
+
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 / count) * i;
+                    const speed = Math.random() * 5.5 + 2.5;
+                    particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        alpha: 1,
+                        decay: Math.random() * 0.02 + 0.015,
+                        radius: Math.random() * 3.5 + 2
+                    });
+                }
+            }
+
+            fireworksInterval = setInterval(createFirework, 380);
+            createFirework();
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.05;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = p.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+
+                if (document.getElementById("singingScene").classList.contains("show")) {
+                    requestAnimationFrame(render);
+                }
+            }
+
+            render();
+        }
+
+        /* ================================================= */
+        /* 6. TRANG 3: THỔI NẾN (HIỆN SAU 5S, GIỮ 2S) */
         /* ================================================= */
         let page3Started = false;
         let candleIsBlown = false;
@@ -1706,7 +1961,7 @@
                 holdAnimationFrame = null;
             }
 
-            scene.classList.remove("lights-off", "ready", "blowing");
+            scene.classList.remove("lights-off", "ready", "blowing", "finished");
 
             const wishText = document.getElementById("wishText");
             if (wishText) wishText.style.opacity = "1";
@@ -1720,8 +1975,8 @@
                 f.style.opacity = "1";
             });
 
-            const singingScene = document.getElementById("singingScene");
-            if (singingScene) singingScene.classList.remove("show");
+            const wishMade = document.getElementById("wishMade");
+            if (wishMade) wishMade.classList.remove("show");
 
             document.querySelectorAll(".candle .smoke").forEach(function (s) { s.remove(); });
 
@@ -1809,6 +2064,7 @@
                 holdAnimationFrame = null;
             }
 
+            const scene = document.getElementById("birthdayWishScene");
             const flames = document.querySelectorAll(".flame");
             const progressBar = document.getElementById("holdProgressBar");
             const blowContainer = document.getElementById("blowInstruction");
@@ -1833,235 +2089,22 @@
                 candle.appendChild(smoke);
             });
 
-            // Sau 1 giây thổi nến -> Mở màn hình Chibi 3D Hát & Pháo Hoa
             setTimeout(function () {
-                startChibiSingingFeature();
-            }, 1000);
+                if (scene) scene.classList.add("finished");
+            }, 1200);
+
+            setTimeout(function () {
+                const wishMade = document.getElementById("wishMade");
+                if (wishMade) wishMade.classList.add("show");
+            }, 2200);
+
+            setTimeout(function () {
+                goToPage(4);
+            }, 5200);
         }
 
         /* ================================================= */
-        /* 5.1 TÍNH NĂNG MỚI: CHIBI 3D HÁT & PHÁO HOA ~12s   */
-        /* ================================================= */
-        let fireworksInterval = null;
-        let singingAudioCtx = null;
-
-        function playHappyBirthdayMelody() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                singingAudioCtx = new AudioContext();
-
-                // Giai điệu Happy Birthday (Tần số nốt nhạc)
-                const notes = [
-                    { f: 261.63, d: 0.35, t: 0 },    // Hap-
-                    { f: 261.63, d: 0.35, t: 0.4 },  // py
-                    { f: 293.66, d: 0.7,  t: 0.8 },  // Birth-
-                    { f: 261.63, d: 0.7,  t: 1.6 },  // day
-                    { f: 349.23, d: 0.7,  t: 2.4 },  // to
-                    { f: 329.63, d: 1.2,  t: 3.2 },  // youuuu
-
-                    { f: 261.63, d: 0.35, t: 4.8 },  // Hap-
-                    { f: 261.63, d: 0.35, t: 5.2 },  // py
-                    { f: 293.66, d: 0.7,  t: 5.6 },  // Birth-
-                    { f: 261.63, d: 0.7,  t: 6.4 },  // day
-                    { f: 392.00, d: 0.7,  t: 7.2 },  // to
-                    { f: 349.23, d: 1.2,  t: 8.0 },  // youuuu
-
-                    { f: 261.63, d: 0.35, t: 9.5 },  // Hap-
-                    { f: 261.63, d: 0.35, t: 9.9 },  // py
-                    { f: 523.25, d: 0.8,  t: 10.3 }, // Birth-
-                    { f: 440.00, d: 0.8,  t: 11.2 }, // dayyyyy
-                ];
-
-                const now = singingAudioCtx.currentTime + 0.1;
-
-                notes.forEach(note => {
-                    const osc = singingAudioCtx.createOscillator();
-                    const gain = singingAudioCtx.createGain();
-
-                    osc.type = "sine";
-                    osc.frequency.setValueAtTime(note.f, now + note.t);
-
-                    gain.gain.setValueAtTime(0, now + note.t);
-                    gain.gain.linearRampToValueAtTime(0.3, now + note.t + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + note.t + note.d);
-
-                    osc.connect(gain);
-                    gain.connect(singingAudioCtx.destination);
-
-                    osc.start(now + note.t);
-                    osc.stop(now + note.t + note.d + 0.1);
-                });
-            } catch (e) {
-                console.warn("Audio Context không khả dụng:", e);
-            }
-        }
-
-        function startChibiSingingFeature() {
-            // Tắt nhạc nền nhẹ nếu đang bật để nhường giọng hát
-            if (backgroundMusic && !backgroundMusic.paused) {
-                backgroundMusic.pause();
-            }
-
-            const singingScene = document.getElementById("singingScene");
-            const chibiContainer = document.getElementById("chibiContainer");
-            const lyricsElem = document.getElementById("singingLyrics");
-            if (!singingScene) return;
-
-            singingScene.classList.add("show");
-            chibiContainer.classList.add("chibi-singing");
-
-            // Phát âm thanh hát mừng sinh nhật
-            playHappyBirthdayMelody();
-
-            // Khởi chạy canvas pháo hoa
-            startFireworks();
-
-            // Lời bài hát xuất hiện đồng bộ đúng như video
-            const lyricsTimeline = [
-                { time: 200, text: "Happy birthday" },
-                { time: 1800, text: "to youuuuu" },
-                { time: 4800, text: "Happy birthday" },
-                { time: 6400, text: "to youuuuu" },
-                { time: 9500, text: "Happy birthdayyyyyy" }
-            ];
-
-            lyricsTimeline.forEach(item => {
-                setTimeout(() => {
-                    lyricsElem.classList.remove("active");
-                    void lyricsElem.offsetWidth;
-                    lyricsElem.textContent = item.text;
-                    lyricsElem.classList.add("active");
-                }, item.time);
-            });
-
-            // Nhân vật Chibi vừa hát vừa di chuyển tự động: Giữa -> Phải -> Trái -> Giữa (~12 giây)
-            let startTime = performance.now();
-            const totalDuration = 12000; // 12s
-
-            function animateChibiMove(now) {
-                let elapsed = now - startTime;
-                let progress = elapsed / totalDuration;
-
-                if (progress > 1) progress = 1;
-
-                // Tính toán vị trí X (Giữa -> Phải -> Trái -> Giữa)
-                let translateX = 0;
-                if (progress < 0.33) {
-                    // Từ Giữa (0) sang Phải (+120px)
-                    let p = progress / 0.33;
-                    translateX = Math.sin(p * Math.PI / 2) * 120;
-                } else if (progress < 0.66) {
-                    // Từ Phải (+120px) sang Trái (-120px)
-                    let p = (progress - 0.33) / 0.33;
-                    translateX = 120 - Math.sin(p * Math.PI / 2) * 240;
-                } else {
-                    // Từ Trái (-120px) về Giữa (0)
-                    let p = (progress - 0.66) / 0.34;
-                    translateX = -120 + Math.sin(p * Math.PI / 2) * 120;
-                }
-
-                chibiContainer.style.transform = `translateX(calc(-50% + ${translateX}px))`;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animateChibiMove);
-                } else {
-                    // Kết thúc 12s hát -> Chuyển sang Trang 4 (Phong bì thư)
-                    stopChibiSingingFeature();
-                }
-            }
-
-            requestAnimationFrame(animateChibiMove);
-        }
-
-        function stopChibiSingingFeature() {
-            if (fireworksInterval) clearInterval(fireworksInterval);
-            if (singingAudioCtx) {
-                try { singingAudioCtx.close(); } catch(e){}
-            }
-
-            const singingScene = document.getElementById("singingScene");
-            if (singingScene) singingScene.classList.remove("show");
-
-            // Bật lại nhạc nền nếu cần
-            if (backgroundMusic) startMusic();
-
-            // Chuyển sang Trang 4
-            goToPage(4);
-        }
-
-        /* PHÁO HOA CANVAS */
-        function startFireworks() {
-            const canvas = document.getElementById("fireworksCanvas");
-            if (!canvas) return;
-            const ctx = canvas.getContext("2d");
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            let particles = [];
-            const colors = ['#ff4d4d', '#ffaf40', '#fffa65', '#32ff7e', '#18dcff', '#7d5fff', '#ffb8b8'];
-
-            function createFirework() {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * (canvas.height * 0.6);
-                const count = 35;
-
-                for (let i = 0; i < count; i++) {
-                    const angle = (Math.PI * 2 / count) * i;
-                    const speed = Math.random() * 5 + 2;
-                    particles.push({
-                        x: x,
-                        y: y,
-                        vx: Math.cos(angle) * speed,
-                        vy: Math.sin(angle) * speed,
-                        color: colors[Math.floor(Math.random() * colors.length)],
-                        alpha: 1,
-                        decay: Math.random() * 0.02 + 0.015,
-                        radius: Math.random() * 3 + 2
-                    });
-                }
-            }
-
-            fireworksInterval = setInterval(createFirework, 400);
-            createFirework();
-
-            function render() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    let p = particles[i];
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.05; // Gravity
-                    p.alpha -= p.decay;
-
-                    if (p.alpha <= 0) {
-                        particles.splice(i, 1);
-                        continue;
-                    }
-
-                    ctx.save();
-                    ctx.globalAlpha = p.alpha;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = p.color;
-                    ctx.fill();
-                    ctx.restore();
-                }
-
-                if (document.getElementById("singingScene").classList.contains("show")) {
-                    requestAnimationFrame(render);
-                }
-            }
-
-            render();
-        }
-
-        /* ================================================= */
-        /* 6. TRANG 4: PHONG BÌ THƯ & MỞ THƯ */
+        /* 7. TRANG 4: PHONG BÌ THƯ & MỞ THƯ */
         /* ================================================= */
         let isEnvelopeOpening = false;
 
@@ -2102,7 +2145,7 @@
         }
 
         /* ================================================= */
-        /* 7. KHỞI TẠO VÀ LẮNG NGHE SỰ KIỆN */
+        /* 8. KHỞI TẠO VÀ LẮNG NGHE SỰ KIỆN */
         /* ================================================= */
         function setupBirthdayPage() {
             const blowBtn = document.getElementById("blowBtn");
