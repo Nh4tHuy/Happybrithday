@@ -32,6 +32,12 @@
             min-height: 100vh;
         }
 
+        /* Khắc phục lỗi không cho phép chọn/gõ chữ trong ô input */
+        input {
+            user-select: auto !important;
+            -webkit-user-select: auto !important;
+        }
+
         /* ================================================= */
         /* HỆ THỐNG TRANG & CHUYỂN CẢNH MƯỢT MÀ */
         /* ================================================= */
@@ -1702,50 +1708,50 @@
         const musicToggle = document.getElementById("musicToggle");
 
         function updateMusicButton(isPlaying) {
-            if (!musicToggle) return;
-            musicToggle.textContent = isPlaying ? "♫ Tắt nhạc" : "♫ Bật nhạc";
-            musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
-            musicToggle.setAttribute("aria-pressed", String(isPlaying));
-        }
-
-        async function startMusic() {
-            if (!backgroundMusic || !backgroundMusic.paused) return;
-            backgroundMusic.volume = 0.4;
-            try {
-                await backgroundMusic.play();
-                updateMusicButton(true);
-            } catch (error) {
-                updateMusicButton(false);
-                console.warn("Không thể tự động phát music1.mp3:", error);
-            }
-        }
-
-        function toggleMusic() {
+        /* Mở hộp quà chuyển sang trang 2 */
+        function openGift() {
             AudioFX.playClick();
-            if (!backgroundMusic) return;
-            if (backgroundMusic.paused) {
-                startMusic();
-            } else {
-                backgroundMusic.pause();
-                updateMusicButton(false);
+            const gift = document.querySelector(".gift");
+            if (!gift) return;
+
+            gift.classList.add("opening");
+
+            setTimeout(function () {
+                goToPage(2);
+            }, 850);
+        }
+
+        /* Xử lý khi nhấn nút Continue từ Trang 2 News */
+        function handleContinueFromNews() {
+            AudioFX.playClick();
+            const page2 = document.getElementById("page2");
+            if (page2) {
+                page2.classList.remove("active", "page-enter");
             }
+            startChibiSingingFeature();
         }
 
-        if (musicToggle) {
-            musicToggle.addEventListener("click", toggleMusic);
+        /* Thiết lập các ô input chỉ nhận số & Khắc phục hoàn toàn lỗi không nhập được */
+        function setupAnswerInputs() {
+            const answerInputs = document.querySelectorAll(".question input");
+            answerInputs.forEach(function (input) {
+                input.addEventListener("input", function (e) {
+                    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 1);
+                    if (this.value.length === 1) {
+                        const questionNumber = Number(this.id.replace("answer", ""));
+                        handleAnswer(questionNumber);
+                    }
+                });
+
+                // Hỗ trợ sự kiện keyup/keydown cho bàn phím thiết bị di động & PC
+                input.addEventListener("keyup", function (e) {
+                    if (this.value.length === 1) {
+                        const questionNumber = Number(this.id.replace("answer", ""));
+                        handleAnswer(questionNumber);
+                    }
+                });
+            });
         }
-
-        // Tự động thử phát ngay khi tải trang và khi người dùng thực hiện cú chạm đầu tiên
-        window.addEventListener("load", startMusic);
-        document.addEventListener("click", function (event) {
-            if (!event.target.closest("#musicToggle")) startMusic();
-        }, { once: true });
-        document.addEventListener("touchstart", function (event) {
-            if (!event.target.closest("#musicToggle")) startMusic();
-        }, { once: true });
-
-        backgroundMusic?.addEventListener("play", function () { updateMusicButton(true); });
-        backgroundMusic?.addEventListener("pause", function () { updateMusicButton(false); });
 
         /* ================================================= */
         /* 5. PHÂN TÍCH NHẠC HAPY VÀ TỰ ĐỘNG TẠM DỪNG/BẬT LẠI MUSIC1 */
