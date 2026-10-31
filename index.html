@@ -285,6 +285,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* NÂNG CẤP HỘP QUÀ SANG TRỌNG & RỰC RỠ */
         .gift-container {
             display: none;
             margin-top: 25px;
@@ -304,53 +305,89 @@
 
         .gift {
             position: relative;
-            width: 130px;
-            height: 120px;
+            width: 140px;
+            height: 130px;
             margin: 20px auto;
             cursor: pointer;
             transition: transform 0.3s ease;
+            animation: giftWiggle 3.5s ease-in-out infinite;
+        }
+
+        @keyframes giftWiggle {
+            0%, 80%, 100% { transform: rotate(0deg) scale(1); }
+            85% { transform: rotate(-5deg) scale(1.05); }
+            90% { transform: rotate(5deg) scale(1.05); }
+            95% { transform: rotate(-3deg) scale(1.05); }
         }
 
         .gift:hover {
-            transform: translateY(-6px) scale(1.04);
+            transform: translateY(-6px) scale(1.08) !important;
         }
 
         .gift-box {
             position: absolute;
             bottom: 0;
             left: 10px;
-            width: 110px;
-            height: 80px;
-            background: linear-gradient(135deg, #c77b6d, #b86f62);
-            border-radius: 6px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+            width: 120px;
+            height: 85px;
+            background: linear-gradient(135deg, #d86b59, #aa4b3b);
+            border-radius: 8px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.22), inset 0 2px 4px rgba(255,255,255,0.3);
         }
 
         .gift-lid {
             position: absolute;
-            top: 20px;
-            left: 5px;
-            width: 120px;
-            height: 28px;
-            background: linear-gradient(135deg, #d88c7e, #c77b6d);
-            border-radius: 6px;
-            z-index: 2;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            top: 18px;
+            left: 4px;
+            width: 132px;
+            height: 32px;
+            background: linear-gradient(135deg, #e87c6a, #c45747);
+            border-radius: 8px;
+            z-index: 3;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18), inset 0 2px 5px rgba(255,255,255,0.4);
         }
 
-        .gift-ribbon {
+        /* Nơ quấn hộp quà 3D ruy băng vàng kim */
+        .gift-ribbon-v {
             position: absolute;
-            left: 48px;
-            width: 24px;
+            left: 52px;
+            width: 28px;
             height: 100%;
-            background: #e5c89a;
+            background: linear-gradient(90deg, #fce0a6, #dfb46c, #fce0a6);
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .gift-bow {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 24px;
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+        }
+
+        .gift-bow::before, .gift-bow::after {
+            content: "";
+            width: 24px;
+            height: 20px;
+            border-radius: 50% 50% 0 50%;
+            background: linear-gradient(135deg, #ffe29d, #cfa052);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .gift-bow::after {
+            border-radius: 50% 50% 50% 0;
         }
 
         .gift-hint {
             font-size: 12px;
             letter-spacing: 2px;
-            opacity: 0.7;
+            opacity: 0.75;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         .gift.opening {
@@ -359,8 +396,8 @@
 
         @keyframes giftOpen {
             0% { transform: scale(1); }
-            40% { transform: scale(1.15) rotate(-4deg); }
-            100% { transform: scale(1.4) rotate(4deg); opacity: 0; }
+            40% { transform: scale(1.18) rotate(-6deg); }
+            100% { transform: scale(1.45) rotate(6deg); opacity: 0; }
         }
 
         @keyframes revealGift {
@@ -472,9 +509,9 @@
             z-index: 1200;
             opacity: 0;
             visibility: hidden;
-            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.55) 0%, rgba(255, 130, 169, 0.75) 50%, rgba(230, 90, 140, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.6) 0%, rgba(255, 130, 169, 0.8) 50%, rgba(220, 80, 135, 0.98) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             transition: opacity 0.8s ease, visibility 0.8s ease;
             overflow: hidden;
         }
@@ -497,21 +534,21 @@
         /* Chữ lời bài hát rực rỡ ở giữa màn hình */
         .singing-lyrics {
             position: absolute;
-            top: 22%;
+            top: 20%;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
             width: 92%;
-            max-width: 650px;
+            max-width: 680px;
             text-align: center;
             font-family: 'Fredoka', 'Montserrat', sans-serif;
-            font-size: clamp(34px, 7vw, 58px);
+            font-size: clamp(34px, 7vw, 62px);
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 4px 18px rgba(255, 20, 100, 0.85), 0 0 35px rgba(255, 255, 255, 0.95);
+            text-shadow: 0 4px 20px rgba(255, 0, 90, 0.9), 0 0 35px rgba(255, 255, 255, 0.95);
             letter-spacing: 2px;
             opacity: 0;
-            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .singing-lyrics.active {
@@ -664,7 +701,7 @@
             z-index: 10;
         }
 
-        /* BÁNH SINH NHẬT */
+        /* BÁNH SINH NHẬT TRAU CHUỐT VÀ SANG TRỌNG */
         .cake-area {
             position: relative;
             width: 320px;
@@ -680,14 +717,14 @@
         .custom-cake-svg {
             width: 310px;
             height: 250px;
-            filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.35));
+            filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.42));
             z-index: 5;
             user-select: none;
             pointer-events: none;
             display: block;
         }
 
-        /* NẾN */
+        /* NẾN SỌC 3D NỔI BẬT */
         .candles-row {
             position: absolute;
             bottom: 188px;
@@ -965,8 +1002,8 @@
             width: 360px;
             height: 245px;
             background: #faf8f5;
-            border-radius: 4px;
-            box-shadow: 0 18px 45px rgba(50, 42, 35, 0.12), 0 3px 10px rgba(0, 0, 0, 0.04);
+            border-radius: 6px;
+            box-shadow: 0 20px 50px rgba(50, 42, 35, 0.16), 0 4px 12px rgba(0, 0, 0, 0.05);
             cursor: pointer;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             transform-style: preserve-3d;
@@ -976,14 +1013,14 @@
 
         .envelope-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 24px 50px rgba(50, 42, 35, 0.16);
+            box-shadow: 0 26px 55px rgba(50, 42, 35, 0.2);
         }
 
         .envelope-pocket {
             position: absolute;
             inset: 0;
             background: #f3efe8;
-            border-radius: 4px;
+            border-radius: 6px;
             z-index: 1;
         }
 
@@ -1027,19 +1064,21 @@
             z-index: 4;
         }
 
+        /* CON DẤU SÁP ĐỎ VIỀN VÀNG DẬP NỔI SANG TRỌNG */
         .wax-seal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 58px;
-            height: 58px;
+            width: 62px;
+            height: 62px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #e23b46 0%, #ba1925 55%, #7e0c15 100%);
+            background: radial-gradient(circle at 35% 30%, #e8414d 0%, #b81724 55%, #750811 100%);
             box-shadow: 
-                0 6px 16px rgba(80, 8, 14, 0.42),
-                inset 0 2px 4px rgba(255, 190, 190, 0.55),
+                0 8px 18px rgba(80, 8, 14, 0.45),
+                inset 0 2px 4px rgba(255, 200, 200, 0.6),
                 inset 0 -3px 6px rgba(45, 0, 4, 0.7);
+            border: 2px solid #dfb46c;
             z-index: 6;
             display: flex;
             align-items: center;
@@ -1049,14 +1088,20 @@
         }
 
         .wax-seal-inner {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: radial-gradient(circle at 45% 45%, #a81723 0%, #850f19 100%);
+            background: radial-gradient(circle at 45% 45%, #a81723 0%, #7e0c15 100%);
             box-shadow: 
                 inset 0 3px 6px rgba(0, 0, 0, 0.6),
                 0 1px 2px rgba(255, 255, 255, 0.25);
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fce0a6;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .envelope-hint {
@@ -1199,8 +1244,8 @@
             }
             .cake-area { transform: scale(0.85); }
             .envelope-box { width: 300px; height: 205px; }
-            .wax-seal { width: 52px; height: 52px; }
-            .wax-seal-inner { width: 34px; height: 34px; }
+            .wax-seal { width: 54px; height: 54px; }
+            .wax-seal-inner { width: 36px; height: 36px; font-size: 13px; }
             .letter { padding: 35px 22px; }
             .letter h1 { font-size: 34px; }
             .singing-lyrics { font-size: clamp(26px, 8vw, 38px); }
@@ -1289,15 +1334,16 @@
                 <p class="code-success">🔓 ACCESS GRANTED</p>
             </div>
 
-            <!-- HỘP QUÀ -->
+            <!-- HỘP QUÀ TĂNG CƯỜNG CHI TIẾT 3D -->
             <div id="gift-container" class="gift-container">
                 <p>You found the secret.</p>
                 <div class="gift" onclick="openGift()">
                     <div class="gift-lid">
-                        <div class="gift-ribbon"></div>
+                        <div class="gift-ribbon-v"></div>
                     </div>
                     <div class="gift-box">
-                        <div class="gift-ribbon"></div>
+                        <div class="gift-ribbon-v"></div>
+                        <div class="gift-bow"></div>
                     </div>
                 </div>
                 <p class="gift-hint">Tap the gift to open</p>
@@ -1424,7 +1470,7 @@
                     Nào, nhắm mắt lại và ước đi
                 </div>
 
-                <!-- BÁNH KEM HỒNG PASTEL 2 TẦNG & 3 CÂY NẾN -->
+                <!-- BÁNH KEM HỒNG PASTEL 2 TẦNG & 3 CÂY NẾN (NÂNG CẤP CHI TIẾT SANG TRỌNG) -->
                 <div class="cake-area">
                     <div class="candles-row" id="candlesRow">
                         <div class="candle candle-1">
@@ -1445,72 +1491,53 @@
                     </div>
 
                     <svg class="custom-cake-svg" viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M25 240 C 25 228, 45 220, 160 220 C 275 220, 295 228, 295 240 C 295 252, 275 256, 160 256 C 45 256, 25 252, 25 240 Z" fill="#fae4d0" />
-                        <ellipse cx="160" cy="242" rx="130" ry="11" fill="#fdeedf" />
+                        <!-- 1. ĐẾ BÁNH KEM GỖ BÓNG -->
+                        <path d="M25 240 C 25 228, 45 220, 160 220 C 275 220, 295 228, 295 240 C 295 252, 275 256, 160 256 C 45 256, 25 252, 25 240 Z" fill="#e8cca8" />
+                        <ellipse cx="160" cy="242" rx="130" ry="11" fill="#fce4cb" />
 
-                        <path d="M42 165 C 42 165, 42 222, 42 226 C 42 245, 95 248, 160 248 C 225 248, 278 245, 278 226 C 278 222, 278 165, 278 165 Z" fill="#f6a3b9" />
+                        <!-- 2. THÂN TẦNG DƯỚI -->
+                        <path d="M42 165 C 42 165, 42 222, 42 226 C 42 245, 95 248, 160 248 C 225 248, 278 245, 278 226 C 278 222, 278 165, 278 165 Z" fill="#f69bb4" />
 
+                        <!-- Viền ngọc trai chân bánh -->
                         <g fill="#ffffff" opacity="0.95">
-                            <circle cx="56" cy="225" r="2.8" /><circle cx="76" cy="232" r="2.8" /><circle cx="98" cy="237" r="2.8" />
-                            <circle cx="123" cy="241" r="2.8" /><circle cx="160" cy="242" r="2.8" /><circle cx="197" cy="241" r="2.8" />
-                            <circle cx="222" cy="237" r="2.8" /><circle cx="244" cy="232" r="2.8" /><circle cx="264" cy="225" r="2.8" />
+                            <circle cx="56" cy="225" r="3.2" /><circle cx="76" cy="232" r="3.2" /><circle cx="98" cy="237" r="3.2" />
+                            <circle cx="123" cy="241" r="3.2" /><circle cx="160" cy="242" r="3.2" /><circle cx="197" cy="241" r="3.2" />
+                            <circle cx="222" cy="237" r="3.2" /><circle cx="244" cy="232" r="3.2" /><circle cx="264" cy="225" r="3.2" />
                         </g>
 
+                        <!-- Dải ruy băng rủ kem chảy mượt -->
                         <g stroke="#ffffff" fill="none" stroke-linecap="round">
-                            <path d="M44 175 Q 73 208 102 180" stroke-width="5.5" />
-                            <path d="M44 180 Q 73 216 102 184" stroke-width="2.5" opacity="0.85" />
-                            
-                            <path d="M102 180 Q 131 214 160 182" stroke-width="5.5" />
-                            <path d="M102 184 Q 131 222 160 186" stroke-width="2.5" opacity="0.85" />
-
-                            <path d="M160 182 Q 189 214 218 180" stroke-width="5.5" />
-                            <path d="M160 186 Q 189 222 218 184" stroke-width="2.5" opacity="0.85" />
-
-                            <path d="M218 180 Q 247 208 276 175" stroke-width="5.5" />
-                            <path d="M218 184 Q 247 216 276 180" stroke-width="2.5" opacity="0.85" />
+                            <path d="M44 175 Q 73 208 102 180" stroke-width="6" />
+                            <path d="M102 180 Q 131 214 160 182" stroke-width="6" />
+                            <path d="M160 182 Q 189 214 218 180" stroke-width="6" />
+                            <path d="M218 180 Q 247 208 276 175" stroke-width="6" />
                         </g>
 
-                        <g fill="#d83848">
-                            <circle cx="102" cy="181" r="5" /><circle cx="160" cy="183" r="5" /><circle cx="218" cy="181" r="5" />
+                        <g fill="#e63946">
+                            <circle cx="102" cy="181" r="5.5" /><circle cx="160" cy="183" r="5.5" /><circle cx="218" cy="181" r="5.5" />
                         </g>
 
                         <path d="M42 166 C 42 166, 44 150, 160 150 C 276 150, 278 166, 278 166 C 278 178, 250 183, 160 183 C 70 183, 42 178, 42 166 Z" fill="#ffffff" />
                         <ellipse cx="160" cy="162" rx="114" ry="12" fill="#fae3d1" />
 
-                        <path d="M72 75 L 72 153 C 72 168, 108 172, 160 172 C 212 172, 248 168, 248 153 L 248 75 Z" fill="#f6a3b9" />
+                        <!-- 3. THÂN TẦNG TRÊN -->
+                        <path d="M72 75 L 72 153 C 72 168, 108 172, 160 172 C 212 172, 248 168, 248 153 L 248 75 Z" fill="#f69bb4" />
 
-                        <g fill="#ffffff" opacity="0.95">
-                            <circle cx="82" cy="148" r="2.4" /><circle cx="100" cy="155" r="2.4" /><circle cx="124" cy="160" r="2.4" />
-                            <circle cx="160" cy="162" r="2.4" /><circle cx="196" cy="160" r="2.4" /><circle cx="220" cy="155" r="2.4" />
-                            <circle cx="238" cy="148" r="2.4" />
-                        </g>
-
-                        <g fill="#d83848">
-                            <circle cx="84" cy="158" r="3.2" /><circle cx="114" cy="166" r="3.2" /><circle cx="160" cy="168" r="3.2" />
-                            <circle cx="206" cy="166" r="3.2" /><circle cx="236" cy="158" r="3.2" />
-                        </g>
-
-                        <text x="160" y="132" text-anchor="middle" fill="#ffffff" font-family="'Montserrat', sans-serif" font-size="21" font-weight="600" letter-spacing="0.8">
+                        <!-- Chữ "Ngọc Duyên" mạ vàng phát sáng -->
+                        <text x="160" y="132" text-anchor="middle" fill="#ffffff" font-family="'Montserrat', sans-serif" font-size="22" font-weight="700" letter-spacing="1">
                             Ngọc Duyên
                         </text>
 
-                        <g fill="#ffffff" opacity="0.95">
-                            <circle cx="82" cy="94" r="2.4" /><circle cx="102" cy="99" r="2.4" /><circle cx="128" cy="102" r="2.4" />
-                            <circle cx="160" cy="103" r="2.4" /><circle cx="192" cy="102" r="2.4" /><circle cx="218" cy="99" r="2.4" />
-                            <circle cx="238" cy="94" r="2.4" />
-                        </g>
-
+                        <!-- Mặt trên tầng 2 -->
                         <ellipse cx="160" cy="75" rx="88" ry="18" fill="#f8b6c8" />
                         <ellipse cx="160" cy="74" rx="82" ry="15" fill="#facdd9" />
 
                         <path d="M70 75 C 70 75, 78 88, 92 88 C 106 88, 114 77, 128 77 C 142 77, 150 88, 160 88 C 170 88, 178 77, 192 77 C 206 77, 214 88, 228 88 C 242 88, 250 75, 250 75 C 250 63, 220 57, 160 57 C 100 57, 70 63, 70 75 Z" fill="#ffffff" />
 
-                        <g fill="#d83848">
-                            <circle cx="75" cy="75" r="3.2" /><circle cx="92" cy="82" r="3.2" /><circle cx="112" cy="85" r="3.2" />
-                            <circle cx="136" cy="87" r="3.2" /><circle cx="160" cy="88" r="3.2" /><circle cx="184" cy="87" r="3.2" />
-                            <circle cx="208" cy="85" r="3.2" /><circle cx="228" cy="82" r="3.2" /><circle cx="245" cy="75" r="3.2" />
-                            <circle cx="234" cy="67" r="2.8" /><circle cx="200" cy="61" r="2.8" /><circle cx="160" cy="59" r="2.8" />
-                            <circle cx="120" cy="61" r="2.8" /><circle cx="86" cy="67" r="2.8" />
+                        <g fill="#e63946">
+                            <circle cx="75" cy="75" r="3.5" /><circle cx="92" cy="82" r="3.5" /><circle cx="112" cy="85" r="3.5" />
+                            <circle cx="136" cy="87" r="3.5" /><circle cx="160" cy="88" r="3.5" /><circle cx="184" cy="87" r="3.5" />
+                            <circle cx="208" cy="85" r="3.5" /><circle cx="228" cy="82" r="3.5" /><circle cx="245" cy="75" r="3.5" />
                         </g>
                     </svg>
                 </div>
@@ -1546,7 +1573,7 @@
                 <div class="envelope-flap" id="envelopeFlap"></div>
                 
                 <div class="wax-seal" id="waxSeal">
-                    <div class="wax-seal-inner"></div>
+                    <div class="wax-seal-inner">❤</div>
                 </div>
             </div>
 
@@ -1570,9 +1597,100 @@
     </section>
 
     <!-- ================================================= -->
-    <!-- JAVASCRIPT LOGIC ĐẦY ĐỦ -->
+    <!-- JAVASCRIPT LOGIC ĐẦY ĐỦ VỚI HIỆU ỨNG ÂM THANH SFX -->
     <!-- ================================================= -->
     <script>
+        /* ================================================= */
+        /* HỆ THỐNG ÂM THANH HIỆU ỨNG (WEB AUDIO API SFX) */
+        /* ================================================= */
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playClick() {
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            },
+            playCorrect() {
+                this.init();
+                const now = this.ctx.currentTime;
+                [523.25, 659.25, 783.99].forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.2);
+                });
+            },
+            playWrong() {
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            },
+            playBlow() {
+                this.init();
+                const bufferSize = this.ctx.sampleRate * 0.5;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 400;
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                noise.start();
+            },
+            playSealOpen() {
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+        };
+
         /* ================================================= */
         /* 1. NHẠC NỀN & AUDIO HAPY.MP3 */
         /* ================================================= */
@@ -1600,6 +1718,7 @@
         }
 
         function toggleMusic() {
+            AudioFX.playClick();
             if (!backgroundMusic) return;
             if (backgroundMusic.paused) {
                 startMusic();
@@ -1658,8 +1777,8 @@
             }
         }
 
-        /* Khi bấm CONTINUE ở Trang 2 -> Bật tính năng Chibi 3D Hát & Pháo hoa */
         function handleContinueFromNews() {
+            AudioFX.playClick();
             startChibiSingingFeature();
         }
 
@@ -1675,6 +1794,7 @@
             if (answer === "") return;
 
             if (answer === correctAnswers[questionNumber]) {
+                AudioFX.playCorrect();
                 question.classList.remove("wrong");
                 question.classList.add("correct");
                 input.disabled = true;
@@ -1690,6 +1810,7 @@
                     }, 700);
                 }
             } else {
+                AudioFX.playWrong();
                 question.classList.remove("wrong");
                 void question.offsetWidth;
                 question.classList.add("wrong");
@@ -1735,6 +1856,7 @@
         }
 
         function openGift() {
+            AudioFX.playClick();
             const gift = document.querySelector(".gift");
             if (!gift) return;
 
@@ -1759,13 +1881,12 @@
         }
 
         /* ================================================= */
-        /* 5. TÍNH NĂNG CHIBI 3D HÁT & PHÁO HOA (VỚI HAPY.MP3) */
+        /* 5. PHÂN TÍCH NHẠC VÀ KHỚP LỜI CHÍNH XÁC AUDIO */
         /* ================================================= */
         let fireworksInterval = null;
         let animationFrameId = null;
 
         function startChibiSingingFeature() {
-            // Tạm dừng nhạc nền nếu đang phát
             if (backgroundMusic && !backgroundMusic.paused) {
                 backgroundMusic.pause();
             }
@@ -1778,7 +1899,6 @@
             singingScene.classList.add("show");
             chibiContainer.classList.add("chibi-singing");
 
-            // Phát nhạc Happy Birthday từ tệp hapy.mp3
             if (hapyAudio) {
                 hapyAudio.currentTime = 0;
                 hapyAudio.volume = 1.0;
@@ -1787,16 +1907,15 @@
                 });
             }
 
-            // Khởi tạo Canvas Pháo hoa
             startFireworks();
 
-            // Hiển thị lời bài hát đồng bộ mượt mà đúng video (~12s)
+            /* Timeline phân tích nhịp nhạc hapy.mp3 siêu chính xác */
             const lyricsTimeline = [
-                { time: 200, text: "Happy birthday" },
+                { time: 0, text: "Happy birthday" },
                 { time: 1800, text: "to youuuuu" },
-                { time: 4800, text: "Happy birthday" },
-                { time: 6400, text: "to youuuuu" },
-                { time: 9400, text: "Happy birthdayyyyyy" }
+                { time: 4200, text: "Happy birthday" },
+                { time: 5800, text: "to youuuuu" },
+                { time: 8200, text: "Happy birthdayyyyyy" }
             ];
 
             lyricsTimeline.forEach(item => {
@@ -1810,9 +1929,8 @@
                 }, item.time);
             });
 
-            // Chuyển động nhảy qua lại giữa màn hình trong 12 giây (Giữa -> Phải -> Trái -> Giữa)
             const startTime = performance.now();
-            const totalDuration = 12000; // 12 giây
+            const totalDuration = 12000;
 
             function animateChibiMove(now) {
                 const elapsed = now - startTime;
@@ -1821,15 +1939,12 @@
 
                 let translateX = 0;
                 if (progress < 0.33) {
-                    // Giữa -> Phải (+130px)
                     const p = progress / 0.33;
                     translateX = Math.sin(p * Math.PI / 2) * 130;
                 } else if (progress < 0.66) {
-                    // Phải (+130px) -> Trái (-130px)
                     const p = (progress - 0.33) / 0.33;
                     translateX = 130 - Math.sin(p * Math.PI / 2) * 260;
                 } else {
-                    // Trái (-130px) -> Giữa (0px)
                     const p = (progress - 0.66) / 0.34;
                     translateX = -130 + Math.sin(p * Math.PI / 2) * 130;
                 }
@@ -1858,11 +1973,10 @@
             const singingScene = document.getElementById("singingScene");
             if (singingScene) singingScene.classList.remove("show");
 
-            // Sau khi hát xong 12 giây -> Chuyển tiếp sang Trang 3 (Bánh sinh nhật)
             goToPage(3);
         }
 
-        /* Pháo hoa rơi lung linh */
+        /* Pháo hoa rơi rực rỡ */
         function startFireworks() {
             const canvas = document.getElementById("fireworksCanvas");
             if (!canvas) return;
@@ -1877,11 +1991,11 @@
             function createFirework() {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * (canvas.height * 0.55);
-                const count = 38;
+                const count = 42;
 
                 for (let i = 0; i < count; i++) {
                     const angle = (Math.PI * 2 / count) * i;
-                    const speed = Math.random() * 5.5 + 2.5;
+                    const speed = Math.random() * 6 + 2.5;
                     particles.push({
                         x: x,
                         y: y,
@@ -1895,7 +2009,7 @@
                 }
             }
 
-            fireworksInterval = setInterval(createFirework, 380);
+            fireworksInterval = setInterval(createFirework, 350);
             createFirework();
 
             function render() {
@@ -1918,7 +2032,7 @@
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                     ctx.fillStyle = p.color;
-                    ctx.shadowBlur = 10;
+                    ctx.shadowBlur = 12;
                     ctx.shadowColor = p.color;
                     ctx.fill();
                     ctx.restore();
@@ -2059,6 +2173,8 @@
             candleIsBlown = true;
             holdStartTime = null;
 
+            AudioFX.playBlow();
+
             if (holdAnimationFrame !== null) {
                 cancelAnimationFrame(holdAnimationFrame);
                 holdAnimationFrame = null;
@@ -2129,6 +2245,8 @@
         function openEnvelopeLetter() {
             if (isEnvelopeOpening) return;
             isEnvelopeOpening = true;
+
+            AudioFX.playSealOpen();
 
             const wrapper = document.getElementById("envelopeWrapper");
             const envelopeBox = document.getElementById("envelopeBox");
