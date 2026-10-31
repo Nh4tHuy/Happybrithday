@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>happybrithday</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================= */
+        /* CÀI ĐẶT CHUNG & RESET */
+        /* ================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            background: #f5efe4;
+            color: #241f1b;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            min-height: 100vh;
+        }
+
+        /* ================================================= */
+        /* HỆ THỐNG TRANG */
+        /* ================================================= */
+        .page {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .page-enter {
+            animation: pageEnter 0.9s ease forwards;
+        }
+
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================================================= */
+        /* TRANG 1 - SECRET CODE */
+        /* ================================================= */
+        #page1 {
+            background: radial-gradient(circle at top, #fffaf1, #eee2d0);
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .small-title {
+            font-size: 11px;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            opacity: 0.65;
+            text-transform: uppercase;
+        }
+
+        .lock-icon {
+            font-size: 56px;
+            margin-bottom: 8px;
+            display: inline-block;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .game-container h2 {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 14.5px;
+            color: #554e47;
+        }
+
+        /* Tiến trình câu đố */
+        .progress {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d5c7b4;
+            transition: transform 0.4s ease, background 0.4s ease;
+        }
+
+        .progress-dot.active {
+            transform: scale(1.35);
+            background: #241f1b;
+        }
+
+        .puzzle {
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .puzzle.locked {
+            opacity: 0.42;
+            filter: blur(1px);
+            pointer-events: none;
+        }
+
+        .question-number {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            font-weight: 600;
+        }
+
+        .question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 14px auto;
+            padding: 16px 20px;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1.5px solid #d5c7b4;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .question p {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 26px;
+            font-weight: 600;
+            margin: 0;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .question input {
+            width: 60px;
+            height: 46px;
+            padding: 5px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            border: 1.5px solid #bcae9b;
+            border-radius: 10px;
+            background: #fffdf9;
+            color: #241f1b;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .question input:focus {
+            border-color: #241f1b;
+            box-shadow: 0 0 0 3px rgba(36, 31, 27, 0.12);
+        }
+
+        .question.correct {
+            border-color: #5b7553;
+            background: rgba(235, 245, 230, 0.75);
+            animation: correctAnswer 0.5s ease;
+        }
+
+        .question.wrong {
+            border-color: #c95d5d;
+            background: rgba(255, 235, 235, 0.85);
+            animation: wrongAnswer 0.45s ease;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes wrongAnswer {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .game-message {
+            min-height: 22px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #6d6257;
+        }
+
+        .final-code {
+            display: none;
+            margin-top: 25px;
+            animation: revealCode 0.9s ease forwards;
+        }
+
+        .final-code.show {
+            display: block;
+        }
+
+        .final-code > p:first-child {
+            font-size: 11px;
+            letter-spacing: 4px;
+            opacity: 0.65;
+            font-weight: 600;
+        }
+
+        .code-display {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .code-display span {
+            width: 48px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #241f1b;
+            color: white;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 32px;
+            font-weight: 700;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .code-success {
+            color: #43663a;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        @keyframes revealCode {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gift-container {
+            display: none;
+            margin-top: 25px;
+            animation: revealGift 0.9s ease forwards;
+        }
+
+        .gift-container.show {
+            display: block;
+        }
+
+        .gift-container > p:first-child {
+            font-size: 14px;
+            font-style: italic;
+            opacity: 0.8;
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        .gift {
+            position: relative;
+            width: 130px;
+            height: 120px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gift:hover {
+            transform: translateY(-6px) scale(1.04);
+        }
+
+        .gift-box {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 110px;
+            height: 80px;
+            background: #b86f62;
+            border-radius: 6px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: 20px;
+            left: 5px;
+            width: 120px;
+            height: 28px;
+            background: #c77b6d;
+            border-radius: 6px;
+            z-index: 2;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        }
+
+        .gift-ribbon {
+            position: absolute;
+            left: 48px;
+            width: 24px;
+            height: 100%;
+            background: #e5c89a;
+        }
+
+        .gift-hint {
+            font-size: 12px;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .gift.opening {
+            animation: giftOpen 0.9s ease forwards;
+        }
+
+        @keyframes giftOpen {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.15) rotate(-4deg); }
+            100% { transform: scale(1.4) rotate(4deg); opacity: 0; }
+        }
+
+        @keyframes revealGift {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================================================= */
+        /* TRANG 2 - BREAKING NEWS */
+        /* ================================================= */
+        #page2 {
+            background: #e8dfd1;
+        }
+
+        .newspaper {
+            width: 100%;
+            max-width: 680px;
+            padding: 38px 28px;
+            background: #f8f3e9;
+            border: 1.5px solid #332c25;
+            box-shadow: 8px 8px 0 #332c25;
+            border-radius: 2px;
+        }
+
+        .newspaper h1 {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 46px;
+            letter-spacing: 4px;
+            font-weight: 700;
+            border-bottom: 2px solid #332c25;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .newspaper h2 {
+            font-size: 22px;
+            line-height: 1.4;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .news-intro {
+            line-height: 1.8;
+            font-size: 15px;
+            color: #403831;
+            margin-bottom: 25px;
+        }
+
+        .birthday-images {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            margin: 20px auto;
+            max-width: 600px;
+            flex-wrap: nowrap;
+        }
+
+        .birthday-photo {
+            width: 175px;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 5px solid #fff;
+            background: #d8cebf;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s ease;
+        }
+
+        .birthday-photo:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .newspaper button {
+            margin-top: 22px;
+            padding: 14px 38px;
+            border: none;
+            border-radius: 30px;
+            background: #241f1b;
+            color: white;
+            font-family: "Montserrat", sans-serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .newspaper button:hover {
+            transform: translateY(-3px);
+            background: #403831;
+        }
+
+        /* ================================================= */
+        /* TRANG 3 - BIRTHDAY WISH & CAKE */
+        /* ================================================= */
+        #page3 {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #181512;
+            padding: 0;
+        }
+
+        .birthday-wish-scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f5ead7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 3s ease;
+        }
+
+        .birthday-wish-scene.lights-off {
+            background: #141210;
+        }
+
+        .darkness {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 55%, rgba(255, 200, 100, 0.12) 0%, rgba(10, 8, 7, 0.88) 75%);
+            opacity: 0;
+            transition: opacity 3s ease;
+            z-index: 2;
+        }
+
+        .birthday-wish-scene.lights-off .darkness {
+            opacity: 1;
+        }
+
+        .wish-content {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wish-label {
+            position: absolute;
+            top: 7%;
+            font-size: 11px;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.65);
+            text-transform: uppercase;
+        }
+
+        .wish-text {
+            position: absolute;
+            top: 14%;
+            color: #ffffff;
+            font-size: clamp(20px, 3.2vw, 32px);
+            font-family: "Cormorant Garamond", serif;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-align: center;
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(255, 200, 120, 0.8), 0 0 25px rgba(255, 170, 50, 0.5);
+            transition: opacity 1s ease;
+            z-index: 10;
+        }
+
+        /* ================================================= */
+        /* BÁNH SINH NHẬT HỒNG PASTEL MINH HỌA THEO ẢNH MẪU */
+        /* ================================================= */
+        .cake-area {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 6;
+        }
+
+        .custom-cake-svg {
+            width: 310px;
+            height: 250px;
+            filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.35));
+            z-index: 5;
+            user-select: none;
+            pointer-events: none;
+            display: block;
+        }
+
+        /* Dãy 3 cây nến cắm ngập sâu vào mặt bánh */
+        .candles-row {
+            position: absolute;
+            bottom: 188px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 82px;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 10;
+        }
+
+        .candle {
+            position: relative;
+            width: 14px;
+            height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .candle.candle-1, .candle.candle-3 { height: 48px; }
+        .candle.candle-2 { height: 54px; }
+
+        .candle-wick {
+            width: 2px;
+            height: 6px;
+            background: #443c35;
+            border-radius: 1px;
+            margin-bottom: -1px;
+            z-index: 11;
+        }
+
+        .candle-body {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px 4px 2px 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        /* Đụn kem trắng bọc chân nến cắm vào bánh */
+        .candle::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 8px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            z-index: 11;
+        }
+
+        /* 3 cây nến sọc màu theo đúng ảnh mẫu: Vàng - Đỏ - Xanh */
+        .candle-1 .candle-body {
+            background: repeating-linear-gradient(45deg, #f5a623, #f5a623 4.5px, #ffffff 4.5px, #ffffff 9px);
+        }
+        .candle-2 .candle-body {
+            background: repeating-linear-gradient(45deg, #e34c56, #e34c56 4.5px, #ffffff 4.5px, #ffffff 9px);
+        }
+        .candle-3 .candle-body {
+            background: repeating-linear-gradient(45deg, #4dafdc, #4dafdc 4.5px, #ffffff 4.5px, #ffffff 9px);
+        }
+
+        .flame {
+            --flame-scale: 1;
+            position: absolute;
+            left: 50%;
+            top: -22px;
+            width: 15px;
+            height: 24px;
+            transform: translateX(-50%) scale(var(--flame-scale));
+            transform-origin: center bottom;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(circle at 50% 80%, #fff7a1 10%, #ff8c00 65%, rgba(255, 60, 0, 0.8) 100%);
+            filter: drop-shadow(0 0 8px rgba(255, 180, 50, 0.95)) drop-shadow(0 0 18px rgba(255, 120, 20, 0.7));
+            animation: flameFlicker 0.6s infinite alternate ease-in-out;
+            transition: transform 0.08s linear, opacity 0.2s ease;
+            z-index: 12;
+            pointer-events: none;
+        }
+
+        /* Lệch pha rung ngọn lửa */
+        .candle-1 .flame { animation-delay: 0.1s; }
+        .candle-2 .flame { animation-delay: 0.25s; }
+        .candle-3 .flame { animation-delay: 0s; }
+
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scale(var(--flame-scale)) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(var(--flame-scale)) rotate(2deg); }
+        }
+
+        .birthday-wish-scene.blowing .flame {
+            animation-duration: 0.15s;
+        }
+
+        /* Nút và Hướng dẫn thổi nến xuất hiện sau 5 giây */
+        .blow-container {
+            position: relative;
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(18px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 25;
+        }
+
+        .birthday-wish-scene.ready .blow-container {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .blow-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 34px;
+            background: rgba(255, 245, 230, 0.12);
+            border: 1.5px solid rgba(255, 215, 150, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px;
+            color: #ffffff;
+            font-family: "Montserrat", sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 180, 70, 0.25);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        .blow-btn:hover {
+            border-color: rgba(255, 230, 170, 0.95);
+            box-shadow: 0 0 30px rgba(255, 190, 80, 0.45);
+        }
+
+        .blow-btn:active, .birthday-wish-scene.blowing .blow-btn {
+            transform: scale(0.96);
+            border-color: #ffcc66;
+            box-shadow: 0 0 35px rgba(255, 204, 102, 0.65);
+        }
+
+        .blow-btn-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(255, 160, 40, 0.75), rgba(255, 215, 100, 0.85));
+            border-radius: inherit;
+            z-index: 1;
+            transition: width 0.05s linear;
+            pointer-events: none;
+        }
+
+        .blow-btn-text {
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        .blow-hint {
+            margin-top: 12px;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.65);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        /* Khói nến */
+        .smoke {
+            position: absolute;
+            left: 50%;
+            top: -15px;
+            width: 14px;
+            height: 25px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: rgba(220, 220, 220, 0.55);
+            filter: blur(5px);
+            animation: smokeRise 2.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translate(-50%, 0) scale(0.6); }
+            100% { opacity: 0; transform: translate(calc(-50% + 25px), -100px) scale(2.2); }
+        }
+
+        .wish-made {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            background: #000;
+            z-index: 50;
+            transition: opacity 1.5s ease;
+        }
+
+        .wish-made.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .wish-made-title {
+            color: #ffffff;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(38px, 8vw, 70px);
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .wish-made-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: clamp(15px, 2.5vw, 22px);
+            letter-spacing: 2px;
+        }
+
+        /* ================================================= */
+        /* TRANG 4 - PHONG BÌ & LỜI CHÚC (ENVELOPE & LETTER) */
+        /* ================================================= */
+        #page4 {
+            background: #eee4d6;
+            perspective: 1200px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: envelopeFloatUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes envelopeFloatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(90px) scale(0.92);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .envelope-box {
+            position: relative;
+            width: 360px;
+            height: 245px;
+            background: #faf8f5;
+            border-radius: 4px;
+            box-shadow: 0 18px 45px rgba(50, 42, 35, 0.12), 0 3px 10px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            z-index: 10;
+            overflow: visible;
+        }
+
+        .envelope-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 24px 50px rgba(50, 42, 35, 0.16);
+        }
+
+        /* Thân trong và các nếp gấp của phong thư */
+        .envelope-pocket {
+            position: absolute;
+            inset: 0;
+            background: #f3efe8;
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        /* Nếp gấp hai bên trái & phải */
+        .envelope-left-fold {
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(0 0, 50% 50%, 0 100%);
+            background: #fbf9f6;
+            z-index: 2;
+        }
+
+        .envelope-right-fold {
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+            background: #f7f5f1;
+            z-index: 2;
+        }
+
+        /* Nếp gấp đáy phong thư */
+        .envelope-bottom-fold {
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(0 100%, 50% 50%, 100% 100%);
+            background: #ffffff;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid #e7e2d9;
+            z-index: 3;
+        }
+
+        /* Nắp phong thư tam giác hướng xuống */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(0 0, 100% 0, 50% 50%);
+            background: #ffffff;
+            transform-origin: top center;
+            transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.07));
+            z-index: 4;
+        }
+
+        /* Con dấu sáp đỏ chuẩn cổ điển (Red Wax Seal) */
+        .wax-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #e23b46 0%, #ba1925 55%, #7e0c15 100%);
+            box-shadow: 
+                0 6px 16px rgba(80, 8, 14, 0.42),
+                inset 0 2px 4px rgba(255, 190, 190, 0.55),
+                inset 0 -3px 6px rgba(45, 0, 4, 0.7);
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        /* Vành lõm bên trong dấu sáp */
+        .wax-seal-inner {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 45%, #a81723 0%, #850f19 100%);
+            box-shadow: 
+                inset 0 3px 6px rgba(0, 0, 0, 0.6),
+                0 1px 2px rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+        }
+
+        .envelope-hint {
+            margin-top: 25px;
+            font-size: 13px;
+            letter-spacing: 2.5px;
+            color: #6a5e52;
+            text-transform: uppercase;
+            font-weight: 600;
+            animation: hintPulse 2s infinite ease-in-out;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.6; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-3px); }
+        }
+
+        .envelope-box.is-opening .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-box.is-opening .wax-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.4);
+        }
+
+        .envelope-wrapper.is-opening .envelope-hint,
+        .envelope-wrapper.letter-revealed .envelope-hint {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .letter {
+            width: 100%;
+            max-width: 560px;
+            padding: 48px 32px;
+            background: #fffaf2;
+            border-radius: 8px;
+            box-shadow: 0 12px 45px rgba(0,0,0,0.12);
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translate(-50%, 0) scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
+        }
+
+        .envelope-wrapper.letter-revealed .letter {
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: translate(0, 0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 20;
+            margin-top: 10px;
+            animation: letterExpand 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .envelope-wrapper.letter-revealed .envelope-box {
+            display: none;
+        }
+
+        @keyframes letterExpand {
+            0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .letter-icon {
+            font-size: 45px;
+            margin-bottom: 20px;
+        }
+
+        .letter h1 {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 42px;
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+            color: #241f1b;
+        }
+
+        .letter-content {
+            text-align: left;
+            line-height: 1.95;
+            font-size: 15px;
+            color: #403831;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            font-size: 32px;
+            margin-top: 25px;
+        }
+
+        /* Nút điều khiển nhạc nền */
+        .music-toggle {
+            position: fixed;
+            right: max(16px, env(safe-area-inset-right));
+            bottom: max(16px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 999px;
+            padding: 11px 16px;
+            background: rgba(36, 31, 27, 0.88);
+            color: #fffaf1;
+            font: 600 12px "Montserrat", sans-serif;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .music-toggle:hover {
+            background: #403831;
+        }
+
+        .music-toggle:focus-visible {
+            outline: 3px solid #e5c89a;
+            outline-offset: 3px;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .newspaper {
+                padding: 24px 18px;
+                box-shadow: 5px 5px 0 #332c25;
+            }
+            .newspaper h1 { font-size: 32px; }
+            .newspaper h2 { font-size: 20px; }
+            .birthday-images {
+                flex-direction: row;
+                gap: 12px;
+                margin: 16px auto;
+            }
+            .birthday-photo {
+                width: 42vw;
+                max-width: 145px;
+                height: 190px;
+                border-width: 4px;
+            }
+            .cake-area { transform: scale(0.85); }
+            .envelope-box { width: 300px; height: 205px; }
+            .wax-seal { width: 52px; height: 52px; }
+            .wax-seal-inner { width: 34px; height: 34px; }
+            .letter { padding: 35px 22px; }
+            .letter h1 { font-size: 34px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Nhạc nền sinh nhật -->
+    <audio id="backgroundMusic" loop preload="none">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <button id="musicToggle" class="music-toggle" type="button"
+            aria-label="Bật nhạc nền" aria-pressed="false">
+        ♫ Bật nhạc
+    </button>
+
+    <!-- ================================================= -->
+    <!-- TRANG 1 - SECRET CODE -->
+    <!-- ================================================= -->
+    <section id="page1" class="page active">
+        <div class="game-container">
+            <p class="small-title">A LITTLE SECRET</p>
+            <div class="lock-icon">🔐</div>
+            <h2>SECRET CODE</h2>
+            <p class="description">
+                Hãy giải các câu hỏi sau <br>
+                để mở món quà bí mật phía dưới!.
+            </p>
+
+            <!-- TIẾN TRÌNH -->
+            <div class="progress">
+                <span class="progress-dot active"></span>
+                <span class="progress-dot"></span>
+                <span class="progress-dot"></span>
+                <span class="progress-dot"></span>
+            </div>
+
+            <!-- CÂU 1 -->
+            <div class="question puzzle" id="question1">
+                <div class="question-number">01</div>
+                <p>9 − 6 = ?</p>
+                <input type="text" id="answer1" placeholder="?" inputmode="numeric" maxlength="1" autocomplete="off">
+            </div>
+
+            <!-- CÂU 2 -->
+            <div class="question puzzle locked" id="question2">
+                <div class="question-number">02</div>
+                <p>5 − 4 = ?</p>
+                <input type="text" id="answer2" placeholder="?" inputmode="numeric" maxlength="1" autocomplete="off" disabled>
+            </div>
+
+            <!-- CÂU 3 -->
+            <div class="question puzzle locked" id="question3">
+                <div class="question-number">03</div>
+                <p>3 − 2 = ?</p>
+                <input type="text" id="answer3" placeholder="?" inputmode="numeric" maxlength="1" autocomplete="off" disabled>
+            </div>
+
+            <!-- CÂU 4 -->
+            <div class="question puzzle locked" id="question4">
+                <div class="question-number">04</div>
+                <p>7 − 7 = ?</p>
+                <input type="text" id="answer4" placeholder="?" inputmode="numeric" maxlength="1" autocomplete="off" disabled>
+            </div>
+
+            <!-- THÔNG BÁO -->
+            <p id="game-message" class="game-message"></p>
+
+            <!-- MẬT MÃ HOÀN CHỈNH (1609) -->
+            <div id="final-code" class="final-code">
+                <p>THE CODE IS</p>
+                <div class="code-display">
+                    <span>3</span>
+                    <span>1</span>
+                    <span>1</span>
+                    <span>0</span>
+                </div>
+                <p class="code-success">🔓 ACCESS GRANTED</p>
+            </div>
+
+            <!-- HỘP QUÀ -->
+            <div id="gift-container" class="gift-container">
+                <p>You found the secret.</p>
+                <div class="gift" onclick="openGift()">
+                    <div class="gift-lid">
+                        <div class="gift-ribbon"></div>
+                    </div>
+                    <div class="gift-box">
+                        <div class="gift-ribbon"></div>
+                    </div>
+                </div>
+                <p class="gift-hint">Tap the gift to open</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================= -->
+    <!-- TRANG 2 - BREAKING NEWS -->
+    <!-- ================================================= -->
+    <section id="page2" class="page">
+        <div class="newspaper">
+            <h1>BREAKING NEWS</h1>
+            <h2>MỘT NHÂN VẬT ĐẶC BIỆT CHÍNH THỨC THÊM MỘT TUỔI!</h2>
+            <p class="news-intro">
+                Một sự kiện đặc biệt vừa được ghi nhận.
+                Nhân vật chính của ngày hôm nay chính thức bước sang tuổi mới với thật nhiều niềm vui và hạnh phúc!
+            </p>
+
+            <div class="birthday-images">
+                <img src="image1.bmp" alt="Birthday photo 1" class="birthday-photo" onerror="this.onerror=null; this.src='https://cdn.phototourl.com/member/2026-10-31-fed41165-6cf4-49b0-8236-e1111a856136.jpg';">
+                <img src="image2.bmp" alt="Birthday photo 2" class="birthday-photo" onerror="this.onerror=null; this.src='https://cdn.phototourl.com/member/2026-10-31-7f21227f-8a78-416c-8ae6-d70baffe6a93.jpg';">
+            </div>
+
+            <button onclick="goToPage(3)">CONTINUE</button>
+        </div>
+    </section>
+
+    <!-- ================================================= -->
+    <!-- TRANG 3 - BIRTHDAY WISH & CAKE -->
+    <!-- ================================================= -->
+    <section id="page3" class="page">
+        <div class="birthday-wish-scene" id="birthdayWishScene">
+            <div class="darkness"></div>
+
+            <div class="wish-content">
+                <div class="wish-label">BIRTHDAY WISH</div>
+
+                <div class="wish-text" id="wishText">
+                    Nào, nhắm mắt lại và ước đi
+                </div>
+
+                <!-- BÁNH KEM HỒNG PASTEL 2 TẦNG & 3 CÂY NẾN -->
+                <div class="cake-area">
+                    <!-- 3 CÂY NẾN CẮM CHẮC CHẮN TRÊN MẶT BÁNH -->
+                    <div class="candles-row" id="candlesRow">
+                        <div class="candle candle-1">
+                            <div class="flame"></div>
+                            <div class="candle-wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                        <div class="candle candle-2">
+                            <div class="flame"></div>
+                            <div class="candle-wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                        <div class="candle candle-3">
+                            <div class="flame"></div>
+                            <div class="candle-wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                    </div>
+
+                    <!-- SVG BÁNH KEM 2 TẦNG LIỀN MẠCH, HỒNG PASTEL NGỌT NGÀO -->
+                    <svg class="custom-cake-svg" viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 1. ĐẾ BÁNH KEM XỐP DƯỚI CÙNG -->
+                        <path d="M25 240 C 25 228, 45 220, 160 220 C 275 220, 295 228, 295 240 C 295 252, 275 256, 160 256 C 45 256, 25 252, 25 240 Z" fill="#fae4d0" />
+                        <ellipse cx="160" cy="242" rx="130" ry="11" fill="#fdeedf" />
+
+                        <!-- 2. THÂN TẦNG DƯỚI (HỒNG PASTEL) -->
+                        <path d="M42 165 C 42 165, 42 222, 42 226 C 42 245, 95 248, 160 248 C 225 248, 278 245, 278 226 C 278 222, 278 165, 278 165 Z" fill="#f6a3b9" />
+
+                        <!-- Viền hạt ngọc chân tầng dưới -->
+                        <g fill="#ffffff" opacity="0.95">
+                            <circle cx="56" cy="225" r="2.8" /><circle cx="76" cy="232" r="2.8" /><circle cx="98" cy="237" r="2.8" />
+                            <circle cx="123" cy="241" r="2.8" /><circle cx="160" cy="242" r="2.8" /><circle cx="197" cy="241" r="2.8" />
+                            <circle cx="222" cy="237" r="2.8" /><circle cx="244" cy="232" r="2.8" /><circle cx="264" cy="225" r="2.8" />
+                        </g>
+
+                        <!-- Dải ruy băng kem rũ (Swag Garlands) tầng dưới -->
+                        <g stroke="#ffffff" fill="none" stroke-linecap="round">
+                            <path d="M44 175 Q 73 208 102 180" stroke-width="5.5" />
+                            <path d="M44 180 Q 73 216 102 184" stroke-width="2.5" opacity="0.85" />
+                            
+                            <path d="M102 180 Q 131 214 160 182" stroke-width="5.5" />
+                            <path d="M102 184 Q 131 222 160 186" stroke-width="2.5" opacity="0.85" />
+
+                            <path d="M160 182 Q 189 214 218 180" stroke-width="5.5" />
+                            <path d="M160 186 Q 189 222 218 184" stroke-width="2.5" opacity="0.85" />
+
+                            <path d="M218 180 Q 247 208 276 175" stroke-width="5.5" />
+                            <path d="M218 184 Q 247 216 276 180" stroke-width="2.5" opacity="0.85" />
+                        </g>
+
+                        <!-- Hạt kẹo cherry đỏ trên các điểm nối ruy băng -->
+                        <g fill="#d83848">
+                            <circle cx="102" cy="181" r="5" /><circle cx="160" cy="183" r="5" /><circle cx="218" cy="181" r="5" />
+                        </g>
+
+                        <!-- Lớp viền kem gợn sóng giữa tầng 1 và tầng 2 tạo sự liền mạch hoàn hảo -->
+                        <path d="M42 166 C 42 166, 44 150, 160 150 C 276 150, 278 166, 278 166 C 278 178, 250 183, 160 183 C 70 183, 42 178, 42 166 Z" fill="#ffffff" />
+                        <!-- Bề mặt đỡ màu kem thơm ngọt -->
+                        <ellipse cx="160" cy="162" rx="114" ry="12" fill="#fae3d1" />
+
+                        <!-- 3. THÂN TẦNG TRÊN (HỒNG PASTEL ĐỒNG NHẤT) -->
+                        <path d="M72 75 L 72 153 C 72 168, 108 172, 160 172 C 212 172, 248 168, 248 153 L 248 75 Z" fill="#f6a3b9" />
+
+                        <!-- Hàng bi viền chân tầng trên -->
+                        <g fill="#ffffff" opacity="0.95">
+                            <circle cx="82" cy="148" r="2.4" /><circle cx="100" cy="155" r="2.4" /><circle cx="124" cy="160" r="2.4" />
+                            <circle cx="160" cy="162" r="2.4" /><circle cx="196" cy="160" r="2.4" /><circle cx="220" cy="155" r="2.4" />
+                            <circle cx="238" cy="148" r="2.4" />
+                        </g>
+
+                        <!-- Chấm kẹo đỏ tầng trên -->
+                        <g fill="#d83848">
+                            <circle cx="84" cy="158" r="3.2" /><circle cx="114" cy="166" r="3.2" /><circle cx="160" cy="168" r="3.2" />
+                            <circle cx="206" cy="166" r="3.2" /><circle cx="236" cy="158" r="3.2" />
+                        </g>
+
+                        <!-- CHỮ "Make a wish" MÀU TRẮNG TINH TẾ -->
+                        <text x="160" y="132" text-anchor="middle" fill="#ffffff" font-family="'Montserrat', sans-serif" font-size="21" font-weight="600" letter-spacing="0.8">
+                            Ngọc Duyên
+                        </text>
+
+                        <!-- Dải hạt viền miệng trên tầng 2 -->
+                        <g fill="#ffffff" opacity="0.95">
+                            <circle cx="82" cy="94" r="2.4" /><circle cx="102" cy="99" r="2.4" /><circle cx="128" cy="102" r="2.4" />
+                            <circle cx="160" cy="103" r="2.4" /><circle cx="192" cy="102" r="2.4" /><circle cx="218" cy="99" r="2.4" />
+                            <circle cx="238" cy="94" r="2.4" />
+                        </g>
+
+                        <!-- MẶT TRÊN CÙNG CỦA BÁNH (NƠI NẾN CẮM VÀO) -->
+                        <ellipse cx="160" cy="75" rx="88" ry="18" fill="#f8b6c8" />
+                        <ellipse cx="160" cy="74" rx="82" ry="15" fill="#facdd9" />
+
+                        <!-- Viền kem gợn sóng trắng xung quanh mặt bánh -->
+                        <path d="M70 75 C 70 75, 78 88, 92 88 C 106 88, 114 77, 128 77 C 142 77, 150 88, 160 88 C 170 88, 178 77, 192 77 C 206 77, 214 88, 228 88 C 242 88, 250 75, 250 75 C 250 63, 220 57, 160 57 C 100 57, 70 63, 70 75 Z" fill="#ffffff" />
+
+                        <!-- Hạt kẹo cherry đỏ viền quanh miệng bánh -->
+                        <g fill="#d83848">
+                            <circle cx="75" cy="75" r="3.2" /><circle cx="92" cy="82" r="3.2" /><circle cx="112" cy="85" r="3.2" />
+                            <circle cx="136" cy="87" r="3.2" /><circle cx="160" cy="88" r="3.2" /><circle cx="184" cy="87" r="3.2" />
+                            <circle cx="208" cy="85" r="3.2" /><circle cx="228" cy="82" r="3.2" /><circle cx="245" cy="75" r="3.2" />
+                            <circle cx="234" cy="67" r="2.8" /><circle cx="200" cy="61" r="2.8" /><circle cx="160" cy="59" r="2.8" />
+                            <circle cx="120" cy="61" r="2.8" /><circle cx="86" cy="67" r="2.8" />
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- NÚT THỔI NẾN (HIỆN SAU 5 GIÂY) -->
+                <div class="blow-container" id="blowInstruction">
+                    <div class="blow-btn" id="blowBtn">
+                        <div class="blow-btn-progress" id="holdProgressBar"></div>
+                        <span class="blow-btn-text">💨 Ấn giữ để thổi nến</span>
+                    </div>
+                    <span class="blow-hint">Giữ liên tục 2 giây</span>
+                </div>
+
+                <!-- THÔNG BÁO WISH MADE -->
+                <div class="wish-made" id="wishMade">
+                    <div class="wish-made-title">Wish made</div>
+                    <div class="wish-made-subtitle">May your wish come true.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================= -->
+    <!-- TRANG 4 - LỜI CHÚC TÂM TÌNH (PHONG THƯ BÍ MẬT) -->
+    <!-- ================================================= -->
+    <section id="page4" class="page">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <!-- Phong bì trắng nắp gập và con dấu sáp đỏ chuẩn phong cách ảnh mẫu -->
+            <div class="envelope-box" id="envelopeBox" onclick="openEnvelopeLetter()">
+                <div class="envelope-pocket"></div>
+                <div class="envelope-left-fold"></div>
+                <div class="envelope-right-fold"></div>
+                <div class="envelope-bottom-fold"></div>
+                <div class="envelope-flap" id="envelopeFlap"></div>
+                
+                <!-- Con dấu sáp đỏ dập nổi ở trung tâm giao điểm các nếp gấp -->
+                <div class="wax-seal" id="waxSeal">
+                    <div class="wax-seal-inner"></div>
+                </div>
+            </div>
+
+            <p class="envelope-hint" id="envelopeHint">✨ Chạm vào phong thư để mở ✨</p>
+
+            <!-- Bức thư bên trong -->
+            <div class="letter" id="letterCard">
+                
+                <p class="small-title">A LETTER FOR YOU</p>
+                <h1>Happy Birthday</h1>
+
+                <div class="letter-content">
+                    <p>Gửi Ngọc Duyên,</p>
+                    <p>
+                     Chúc mừng sinh nhật bạn! 🎂 Tuổi mới chúc bạn luôn vui vẻ, mạnh khỏe, gặp nhiều may mắn và làm được tất cả những điều mà bạn mong muốn. Mong rằng những điều tốt đẹp nhất sẽ luôn đến với bạn. Happy Birthday! ❤️
+                    </p>
+                    <p>
+                        Chúc bạn luôn bình an, hạnh phúc và luôn có những người yêu thương ở bên cạnh.
+                    </p>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT LOGIC ĐẦY ĐỦ -->
+    <!-- ================================================= -->
+    <script>
+        /* ================================================= */
+        /* 1. NHẠC NỀN */
+        /* ================================================= */
+        const backgroundMusic = document.getElementById("backgroundMusic");
+        const musicToggle = document.getElementById("musicToggle");
+
+        function updateMusicButton(isPlaying) {
+            if (!musicToggle) return;
+
+            musicToggle.textContent = isPlaying ? "♫ Tắt nhạc" : "♫ Bật nhạc";
+            musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+            musicToggle.setAttribute("aria-pressed", String(isPlaying));
+        }
+
+        async function startMusic() {
+            if (!backgroundMusic || !backgroundMusic.paused) return;
+
+            backgroundMusic.volume = 0.35;
+            try {
+                await backgroundMusic.play();
+                updateMusicButton(true);
+            } catch (error) {
+                // Autoplay có thể bị trình duyệt chặn; người dùng có thể nhấn nút để thử lại.
+                updateMusicButton(false);
+                console.warn("Không thể phát music.mp3:", error);
+            }
+        }
+
+        function toggleMusic() {
+            if (!backgroundMusic) return;
+
+            if (backgroundMusic.paused) {
+                startMusic();
+            } else {
+                backgroundMusic.pause();
+                updateMusicButton(false);
+            }
+        }
+
+        if (musicToggle) {
+            musicToggle.addEventListener("click", toggleMusic);
+        }
+
+        // Tự thử phát sau tương tác đầu tiên; có nút riêng để bật/tắt thủ công.
+        document.addEventListener("click", function (event) {
+            if (!event.target.closest("#musicToggle")) startMusic();
+        }, { once: true });
+
+        backgroundMusic?.addEventListener("play", function () {
+            updateMusicButton(true);
+        });
+        backgroundMusic?.addEventListener("pause", function () {
+            updateMusicButton(false);
+        });
+        backgroundMusic?.addEventListener("error", function () {
+            updateMusicButton(false);
+            if (musicToggle) musicToggle.title = "Không tải được music.mp3. Hãy kiểm tra tệp nhạc.";
+        });
+
+        /* ================================================= */
+        /* 2. MẬT MÃ CỦA 4 CÂU HỎI */
+        /* ================================================= */
+        const correctAnswers = {
+            1: "3",
+            2: "1",
+            3: "1",
+            4: "0"
+        };
+
+        let currentQuestion = 1;
+
+        /* ================================================= */
+        /* 3. CHUYỂN TRANG */
+        /* ================================================= */
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll(".page");
+
+            pages.forEach(function (page) {
+                page.classList.remove("active");
+                page.classList.remove("page-enter");
+            });
+
+            const nextPage = document.getElementById("page" + pageNumber);
+            if (!nextPage) return;
+
+            nextPage.classList.add("active");
+            void nextPage.offsetWidth;
+            nextPage.classList.add("page-enter");
+
+            if (pageNumber === 3) {
+                startBirthdayPage();
+            }
+
+            if (pageNumber === 4) {
+                resetEnvelope();
+            }
+        }
+
+        /* STREAMING_CHUNK:Scripting answer validation and progression -->
+        /* ================================================= */
+        /* 4. KIỂM TRA ĐÁP ÁN CÂU HỎI */
+        /* ================================================= */
+        function handleAnswer(questionNumber) {
+            const input = document.getElementById("answer" + questionNumber);
+            const question = document.getElementById("question" + questionNumber);
+            if (!input || !question) return;
+
+            const answer = input.value.trim();
+            if (answer === "") return;
+
+            /* Nếu trả lời đúng */
+            if (answer === correctAnswers[questionNumber]) {
+                question.classList.remove("wrong");
+                question.classList.add("correct");
+                input.disabled = true;
+                updateProgress(questionNumber);
+
+                if (questionNumber < 4) {
+                    setTimeout(function () {
+                        unlockNextQuestion(questionNumber + 1);
+                    }, 450);
+                } else {
+                    setTimeout(function () {
+                        showFinalCode();
+                    }, 700);
+                }
+            } else {
+                /* Nếu trả lời sai */
+                question.classList.remove("wrong");
+                void question.offsetWidth;
+                question.classList.add("wrong");
+
+                setTimeout(function () {
+                    input.value = "";
+                    input.focus();
+                }, 450);
+            }
+        }
+
+        /* Mở khóa câu hỏi tiếp theo */
+        function unlockNextQuestion(questionNumber) {
+            const nextQuestion = document.getElementById("question" + questionNumber);
+            if (!nextQuestion) return;
+
+            nextQuestion.classList.remove("locked");
+            const input = nextQuestion.querySelector("input");
+            if (!input) return;
+
+            input.disabled = false;
+            input.focus();
+            currentQuestion = questionNumber;
+        }
+
+        /* Cập nhật các chấm tròn tiến trình */
+        function updateProgress(questionNumber) {
+            const dots = document.querySelectorAll(".progress-dot");
+            dots.forEach(function (dot, index) {
+                if (index < questionNumber) {
+                    dot.classList.add("active");
+                }
+            });
+        }
+
+        /* Hiển thị mật mã hoàn tất và hộp quà */
+        function showFinalCode() {
+            const finalCode = document.getElementById("final-code");
+            if (!finalCode) return;
+            finalCode.classList.add("show");
+
+            setTimeout(function () {
+                const gift = document.getElementById("gift-container");
+                if (gift) gift.classList.add("show");
+            }, 1200);
+        }
+
+        /* Mở hộp quà chuyển sang trang 2 */
+        function openGift() {
+            const gift = document.querySelector(".gift");
+            if (!gift) return;
+
+            gift.classList.add("opening");
+
+            setTimeout(function () {
+                goToPage(2);
+            }, 850);
+        }
+
+        /* Thiết lập các ô input chỉ nhận số */
+        function setupAnswerInputs() {
+            const answerInputs = document.querySelectorAll(".question input");
+            answerInputs.forEach(function (input) {
+                input.addEventListener("input", function () {
+                    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 1);
+                    if (this.value.length === 1) {
+                        const questionNumber = Number(this.id.replace("answer", ""));
+                        handleAnswer(questionNumber);
+                    }
+                });
+            });
+        }
+
+        /* ================================================= */
+        /* 5. TRANG 3: THỔI NẾN (HIỆN SAU 5S, GIỮ 2S) */
+        /* ================================================= */
+        let page3Started = false;
+        let candleIsBlown = false;
+        let holdStartTime = null;
+        let holdAnimationFrame = null;
+
+        const WISH_WAIT_TIME = 5000; // Đợi đủ 5 giây mới hiện nút thổi nến
+        const BLOW_TIME = 2000;      // Ấn giữ đủ 2 giây để thổi nến
+
+        function isBirthdayPageActive() {
+            const page3 = document.getElementById("page3");
+            return page3 && page3.classList.contains("active");
+        }
+
+        function startBirthdayPage() {
+            const scene = document.getElementById("birthdayWishScene");
+            if (!scene) return;
+
+            page3Started = true;
+            candleIsBlown = false;
+            holdStartTime = null;
+
+            if (holdAnimationFrame !== null) {
+                cancelAnimationFrame(holdAnimationFrame);
+                holdAnimationFrame = null;
+            }
+
+            scene.classList.remove("lights-off", "ready", "blowing", "finished");
+
+            const wishText = document.getElementById("wishText");
+            if (wishText) wishText.style.opacity = "1";
+
+            const progressBar = document.getElementById("holdProgressBar");
+            if (progressBar) progressBar.style.width = "0%";
+
+            const flames = document.querySelectorAll(".flame");
+            flames.forEach(function (f) {
+                f.style.setProperty("--flame-scale", "1");
+                f.style.opacity = "1";
+            });
+
+            const wishMade = document.getElementById("wishMade");
+            if (wishMade) wishMade.classList.remove("show");
+
+            document.querySelectorAll(".candle .smoke").forEach(function (s) {
+                s.remove();
+            });
+
+            /* Sau 200ms -> bắt đầu tắt đèn phòng */
+            setTimeout(function () {
+                if (page3Started && isBirthdayPageActive()) {
+                    scene.classList.add("lights-off");
+                }
+            }, 200);
+
+            /* Đủ 5 giây hiển thị câu ước -> xuất hiện nút thổi nến */
+            setTimeout(function () {
+                if (page3Started && !candleIsBlown && isBirthdayPageActive()) {
+                    scene.classList.add("ready");
+                }
+            }, WISH_WAIT_TIME);
+        }
+
+        function startHolding(event) {
+            if (!isBirthdayPageActive() || !page3Started || candleIsBlown) return;
+
+            const scene = document.getElementById("birthdayWishScene");
+            if (!scene || !scene.classList.contains("ready")) return;
+
+            if (event && event.cancelable) {
+                event.preventDefault();
+            }
+
+            if (holdStartTime !== null) return;
+
+            holdStartTime = performance.now();
+            scene.classList.add("blowing");
+            updateBlowingProgress();
+        }
+
+        function updateBlowingProgress() {
+            if (holdStartTime === null || candleIsBlown) return;
+
+            const elapsed = performance.now() - holdStartTime;
+            let progress = elapsed / BLOW_TIME;
+            if (progress > 1) progress = 1;
+
+            const progressBar = document.getElementById("holdProgressBar");
+            if (progressBar) progressBar.style.width = (progress * 100) + "%";
+
+            const flames = document.querySelectorAll(".flame");
+            const flameScale = 1 - (progress * 0.85);
+            flames.forEach(function (f) {
+                f.style.setProperty("--flame-scale", flameScale);
+            });
+
+            if (progress >= 1) {
+                blowOutCandle();
+                return;
+            }
+
+            holdAnimationFrame = requestAnimationFrame(updateBlowingProgress);
+        }
+
+        function stopHolding(event) {
+            if (event && event.cancelable) event.preventDefault();
+            if (candleIsBlown || holdStartTime === null) return;
+
+            if (holdAnimationFrame !== null) {
+                cancelAnimationFrame(holdAnimationFrame);
+                holdAnimationFrame = null;
+            }
+
+            holdStartTime = null;
+
+            const scene = document.getElementById("birthdayWishScene");
+            if (scene) scene.classList.remove("blowing");
+
+            const progressBar = document.getElementById("holdProgressBar");
+            if (progressBar) progressBar.style.width = "0%";
+
+            const flames = document.querySelectorAll(".flame");
+            flames.forEach(function (f) {
+                f.style.setProperty("--flame-scale", "1");
+                f.style.opacity = "1";
+            });
+        }
+
+        function blowOutCandle() {
+            if (candleIsBlown) return;
+            candleIsBlown = true;
+            holdStartTime = null;
+
+            if (holdAnimationFrame !== null) {
+                cancelAnimationFrame(holdAnimationFrame);
+                holdAnimationFrame = null;
+            }
+
+            const scene = document.getElementById("birthdayWishScene");
+            const flames = document.querySelectorAll(".flame");
+            const progressBar = document.getElementById("holdProgressBar");
+            const blowContainer = document.getElementById("blowInstruction");
+            const wishText = document.getElementById("wishText");
+            const candles = document.querySelectorAll(".candle");
+
+            if (progressBar) progressBar.style.width = "100%";
+            flames.forEach(function (f) {
+                f.style.setProperty("--flame-scale", "0");
+                f.style.opacity = "0";
+            });
+            if (blowContainer) blowContainer.style.opacity = "0";
+            if (wishText) wishText.style.opacity = "0";
+
+            /* Tạo khói sau khi tắt từng ngọn nến */
+            candles.forEach(function (candle, idx) {
+                const oldSmoke = candle.querySelector(".smoke");
+                if (oldSmoke) oldSmoke.remove();
+
+                const smoke = document.createElement("div");
+                smoke.className = "smoke";
+                smoke.style.animationDelay = (idx * 0.08) + "s";
+                candle.appendChild(smoke);
+            });
+
+            /* Sau 1.2 giây -> màn hình đen */
+            setTimeout(function () {
+                if (scene) scene.classList.add("finished");
+            }, 1200);
+
+            /* Sau 2.2 giây -> Wish made */
+            setTimeout(function () {
+                const wishMade = document.getElementById("wishMade");
+                if (wishMade) wishMade.classList.add("show");
+            }, 2200);
+
+            /* Sau 5.2 giây -> Chuyển qua Trang 4 (Bao thư) */
+            setTimeout(function () {
+                goToPage(4);
+            }, 5200);
+        }
+
+        /* ================================================= */
+        /* 6. TRANG 4: PHONG BÌ THƯ & MỞ THƯ */
+        /* ================================================= */
+        let isEnvelopeOpening = false;
+
+        function resetEnvelope() {
+            isEnvelopeOpening = false;
+            const wrapper = document.getElementById("envelopeWrapper");
+            const envelopeBox = document.getElementById("envelopeBox");
+            const hint = document.getElementById("envelopeHint");
+
+            if (wrapper) {
+                wrapper.classList.remove("is-opening", "letter-revealed");
+            }
+            if (envelopeBox) {
+                envelopeBox.classList.remove("is-opening");
+                envelopeBox.style.display = "";
+            }
+            if (hint) {
+                hint.style.display = "";
+                hint.style.opacity = "";
+                hint.style.visibility = "";
+            }
+        }
+
+        function openEnvelopeLetter() {
+            if (isEnvelopeOpening) return;
+            isEnvelopeOpening = true;
+
+            const wrapper = document.getElementById("envelopeWrapper");
+            const envelopeBox = document.getElementById("envelopeBox");
+            const hint = document.getElementById("envelopeHint");
+
+            /* Ẩn dòng chữ hướng dẫn ngay lập tức */
+            if (hint) {
+                hint.style.display = "none";
+            }
+
+            /* Bước 1: Mở nắp phong bì 3D và biến mất con dấu */
+            if (wrapper) wrapper.classList.add("is-opening");
+            if (envelopeBox) envelopeBox.classList.add("is-opening");
+
+            /* Bước 2: Sau 650ms, lá thư phóng to mở ra toàn màn hình */
+            setTimeout(function () {
+                if (wrapper) {
+                    wrapper.classList.add("letter-revealed");
+                }
+            }, 650);
+        }
+
+        /* ================================================= */
+        /* 7. KHỞI TẠO VÀ LẮNG NGHE SỰ KIỆN */
+        /* ================================================= */
+        function setupBirthdayPage() {
+            const blowBtn = document.getElementById("blowBtn");
+            if (blowBtn) {
+                blowBtn.addEventListener("pointerdown", startHolding, { passive: false });
+                blowBtn.addEventListener("pointerup", stopHolding, { passive: false });
+                blowBtn.addEventListener("pointerleave", stopHolding, { passive: false });
+                blowBtn.addEventListener("pointercancel", stopHolding, { passive: false });
+            }
+
+            window.addEventListener("blur", function () {
+                if (holdStartTime !== null) stopHolding();
+            });
+
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden && holdStartTime !== null) stopHolding();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setupAnswerInputs();
+            setupBirthdayPage();
+
+            const firstInput = document.getElementById("answer1");
+            if (firstInput) {
+                firstInput.focus();
+            }
+        });
+    </script>
+</body>
+
+</html>
