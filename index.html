@@ -32,12 +32,6 @@
             min-height: 100vh;
         }
 
-        /* Khắc phục lỗi không cho phép chọn/gõ chữ trong ô input */
-        input {
-            user-select: auto !important;
-            -webkit-user-select: auto !important;
-        }
-
         /* ================================================= */
         /* HỆ THỐNG TRANG & CHUYỂN CẢNH MƯỢT MÀ */
         /* ================================================= */
@@ -351,15 +345,12 @@
             border-radius: 8px;
             z-index: 3;
             box-shadow: 0 4px 12px rgba(0,0,0,0.18), inset 0 2px 5px rgba(255,255,255,0.4);
-            display: flex;
-            justify-content: center;
         }
 
-        /* Nơ quấn hộp quà 3D ruy băng vàng kim căn chỉnh nằm chính giữa nắp hộp */
+        /* Nơ quấn hộp quà 3D ruy băng vàng kim */
         .gift-ribbon-v {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 52px;
             width: 28px;
             height: 100%;
             background: linear-gradient(90deg, #fce0a6, #dfb46c, #fce0a6);
@@ -1264,12 +1255,12 @@
 </head>
 
 <body>
-    <!-- Nhạc nền sinh nhật chính đổi sang music1.mp3 và tự động nạp -->
-    <audio id="backgroundMusic" loop preload="auto">
-        <source src="music1.mp3" type="audio/mpeg">
+    <!-- Nhạc nền sinh nhật chính -->
+    <audio id="backgroundMusic" loop preload="none">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- File nhạc Happy Birthday giọng hát Chibi (hapy.mp3) -->
+    <!-- File nhạc Happy Birthday giọng hát Chibi (hapy.mp3 cùng thư mục) -->
     <audio id="hapyAudio" preload="auto">
         <source src="hapy.mp3" type="audio/mpeg">
     </audio>
@@ -1343,16 +1334,16 @@
                 <p class="code-success">🔓 ACCESS GRANTED</p>
             </div>
 
-            <!-- HỘP QUÀ TĂNG CƯỜNG CHI TIẾT 3D CHỈNH ĐẠT NƠ NẮP HỘP -->
+            <!-- HỘP QUÀ TĂNG CƯỜNG CHI TIẾT 3D -->
             <div id="gift-container" class="gift-container">
                 <p>You found the secret.</p>
                 <div class="gift" onclick="openGift()">
                     <div class="gift-lid">
                         <div class="gift-ribbon-v"></div>
-                        <div class="gift-bow"></div>
                     </div>
                     <div class="gift-box">
                         <div class="gift-ribbon-v"></div>
+                        <div class="gift-bow"></div>
                     </div>
                 </div>
                 <p class="gift-hint">Tap the gift to open</p>
@@ -1610,7 +1601,7 @@
     <!-- ================================================= -->
     <script>
         /* ================================================= */
-        /* HỆ THỐNG ÂM THANH HIỆU ỨNG VỚI ÂM LƯỢNG VỪA PHẢI */
+        /* HỆ THỐNG ÂM THANH HIỆU ỨNG (WEB AUDIO API SFX) */
         /* ================================================= */
         const AudioFX = {
             ctx: null,
@@ -1626,8 +1617,8 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(600, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.005, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
@@ -1641,8 +1632,8 @@
                     const gain = this.ctx.createGain();
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(freq, now + i * 0.08);
-                    gain.gain.setValueAtTime(0.08, now + i * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.005, now + i * 0.08 + 0.2);
+                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.2);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
                     osc.start(now + i * 0.08);
@@ -1656,8 +1647,8 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(180, this.ctx.currentTime);
                 osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.25);
-                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.005, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
@@ -1677,8 +1668,8 @@
                 filter.type = 'bandpass';
                 filter.frequency.value = 400;
                 const gain = this.ctx.createGain();
-                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.005, this.ctx.currentTime + 0.5);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
                 noise.connect(filter);
                 filter.connect(gain);
                 gain.connect(this.ctx.destination);
@@ -1691,8 +1682,8 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(300, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.25);
-                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.005, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
@@ -1701,14 +1692,169 @@
         };
 
         /* ================================================= */
-        /* 1. NHẠC NỀN MUSIC1.MP3 & TỰ ĐỘNG PHÁT KHI MỞ WEB */
+        /* 1. NHẠC NỀN & AUDIO HAPY.MP3 */
         /* ================================================= */
         const backgroundMusic = document.getElementById("backgroundMusic");
         const hapyAudio = document.getElementById("hapyAudio");
         const musicToggle = document.getElementById("musicToggle");
 
         function updateMusicButton(isPlaying) {
-        /* Mở hộp quà chuyển sang trang 2 */
+            if (!musicToggle) return;
+            musicToggle.textContent = isPlaying ? "♫ Tắt nhạc" : "♫ Bật nhạc";
+            musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+            musicToggle.setAttribute("aria-pressed", String(isPlaying));
+        }
+
+        async function startMusic() {
+            if (!backgroundMusic || !backgroundMusic.paused) return;
+            backgroundMusic.volume = 0.35;
+            try {
+                await backgroundMusic.play();
+                updateMusicButton(true);
+            } catch (error) {
+                updateMusicButton(false);
+                console.warn("Không thể phát music.mp3:", error);
+            }
+        }
+
+        function toggleMusic() {
+            AudioFX.playClick();
+            if (!backgroundMusic) return;
+            if (backgroundMusic.paused) {
+                startMusic();
+            } else {
+                backgroundMusic.pause();
+                updateMusicButton(false);
+            }
+        }
+
+        if (musicToggle) {
+            musicToggle.addEventListener("click", toggleMusic);
+        }
+
+        document.addEventListener("click", function (event) {
+            if (!event.target.closest("#musicToggle")) startMusic();
+        }, { once: true });
+
+        backgroundMusic?.addEventListener("play", function () { updateMusicButton(true); });
+        backgroundMusic?.addEventListener("pause", function () { updateMusicButton(false); });
+
+        /* ================================================= */
+        /* 2. MẬT MÃ CỦA 4 CÂU HỎI (3110) */
+        /* ================================================= */
+        const correctAnswers = {
+            1: "3",
+            2: "1",
+            3: "1",
+            4: "0"
+        };
+
+        let currentQuestion = 1;
+
+        /* ================================================= */
+        /* 3. CHUYỂN TRANG */
+        /* ================================================= */
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll(".page");
+
+            pages.forEach(function (page) {
+                page.classList.remove("active", "page-enter");
+            });
+
+            const nextPage = document.getElementById("page" + pageNumber);
+            if (!nextPage) return;
+
+            nextPage.classList.add("active");
+            void nextPage.offsetWidth;
+            nextPage.classList.add("page-enter");
+
+            if (pageNumber === 3) {
+                startBirthdayPage();
+            }
+
+            if (pageNumber === 4) {
+                resetEnvelope();
+            }
+        }
+
+        function handleContinueFromNews() {
+            AudioFX.playClick();
+            startChibiSingingFeature();
+        }
+
+        /* ================================================= */
+        /* 4. KIỂM TRA ĐÁP ÁN CÂU HỎI */
+        /* ================================================= */
+        function handleAnswer(questionNumber) {
+            const input = document.getElementById("answer" + questionNumber);
+            const question = document.getElementById("question" + questionNumber);
+            if (!input || !question) return;
+
+            const answer = input.value.trim();
+            if (answer === "") return;
+
+            if (answer === correctAnswers[questionNumber]) {
+                AudioFX.playCorrect();
+                question.classList.remove("wrong");
+                question.classList.add("correct");
+                input.disabled = true;
+                updateProgress(questionNumber);
+
+                if (questionNumber < 4) {
+                    setTimeout(function () {
+                        unlockNextQuestion(questionNumber + 1);
+                    }, 450);
+                } else {
+                    setTimeout(function () {
+                        showFinalCode();
+                    }, 700);
+                }
+            } else {
+                AudioFX.playWrong();
+                question.classList.remove("wrong");
+                void question.offsetWidth;
+                question.classList.add("wrong");
+
+                setTimeout(function () {
+                    input.value = "";
+                    input.focus();
+                }, 450);
+            }
+        }
+
+        function unlockNextQuestion(questionNumber) {
+            const nextQuestion = document.getElementById("question" + questionNumber);
+            if (!nextQuestion) return;
+
+            nextQuestion.classList.remove("locked");
+            const input = nextQuestion.querySelector("input");
+            if (!input) return;
+
+            input.disabled = false;
+            input.focus();
+            currentQuestion = questionNumber;
+        }
+
+        function updateProgress(questionNumber) {
+            const dots = document.querySelectorAll(".progress-dot");
+            dots.forEach(function (dot, index) {
+                if (index < questionNumber) {
+                    dot.classList.add("active");
+                }
+            });
+        }
+
+        function showFinalCode() {
+            const finalCode = document.getElementById("final-code");
+            if (!finalCode) return;
+            finalCode.classList.add("show");
+
+            setTimeout(function () {
+                const gift = document.getElementById("gift-container");
+                if (gift) gift.classList.add("show");
+            }, 1200);
+        }
+
         function openGift() {
             AudioFX.playClick();
             const gift = document.querySelector(".gift");
@@ -1721,30 +1867,11 @@
             }, 850);
         }
 
-        /* Xử lý khi nhấn nút Continue từ Trang 2 News */
-        function handleContinueFromNews() {
-            AudioFX.playClick();
-            const page2 = document.getElementById("page2");
-            if (page2) {
-                page2.classList.remove("active", "page-enter");
-            }
-            startChibiSingingFeature();
-        }
-
-        /* Thiết lập các ô input chỉ nhận số & Khắc phục hoàn toàn lỗi không nhập được */
         function setupAnswerInputs() {
             const answerInputs = document.querySelectorAll(".question input");
             answerInputs.forEach(function (input) {
-                input.addEventListener("input", function (e) {
+                input.addEventListener("input", function () {
                     this.value = this.value.replace(/[^0-9]/g, "").slice(0, 1);
-                    if (this.value.length === 1) {
-                        const questionNumber = Number(this.id.replace("answer", ""));
-                        handleAnswer(questionNumber);
-                    }
-                });
-
-                // Hỗ trợ sự kiện keyup/keydown cho bàn phím thiết bị di động & PC
-                input.addEventListener("keyup", function (e) {
                     if (this.value.length === 1) {
                         const questionNumber = Number(this.id.replace("answer", ""));
                         handleAnswer(questionNumber);
@@ -1754,16 +1881,14 @@
         }
 
         /* ================================================= */
-        /* 5. PHÂN TÍCH NHẠC HAPY VÀ TỰ ĐỘNG TẠM DỪNG/BẬT LẠI MUSIC1 */
+        /* 5. PHÂN TÍCH NHẠC VÀ KHỚP LỜI CHÍNH XÁC AUDIO */
         /* ================================================= */
         let fireworksInterval = null;
         let animationFrameId = null;
 
         function startChibiSingingFeature() {
-            // Tạm dừng nhạc nền music1 khi Chibi bắt đầu hát nhạc hapy
             if (backgroundMusic && !backgroundMusic.paused) {
                 backgroundMusic.pause();
-                updateMusicButton(false);
             }
 
             const singingScene = document.getElementById("singingScene");
@@ -1784,7 +1909,7 @@
 
             startFireworks();
 
-            /* Timeline phân tích nhịp nhạc hapy.mp3 chuẩn xác */
+            /* Timeline phân tích nhịp nhạc hapy.mp3 siêu chính xác */
             const lyricsTimeline = [
                 { time: 0, text: "Happy birthday" },
                 { time: 1800, text: "to youuuuu" },
@@ -1847,9 +1972,6 @@
 
             const singingScene = document.getElementById("singingScene");
             if (singingScene) singingScene.classList.remove("show");
-
-            // Mở lại nhạc nền music1.mp3 sau khi Chibi hát xong
-            startMusic();
 
             goToPage(3);
         }
